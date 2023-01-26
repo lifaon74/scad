@@ -1,0 +1,13 @@
+{
+  "name": "js-scad",
+  "version": "1.0.0",
+  "main": "src/main.ts",
+  "license": "MIT",
+  "scripts": {
+    "dev": "deno run --watch --allow-write src/main.ts ",
+    "run": "deno run --allow-write src/main.ts"
+  },
+  "dependencies": {
+    "scad-js": "^0.5.0"
+  }
+}
