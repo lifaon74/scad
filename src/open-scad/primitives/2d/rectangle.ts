@@ -4,13 +4,13 @@ import { optionalFunctionArgument, transpileFunctionCall } from '../../misc/tran
 import { transpileNumber } from '../../misc/transpile-number.ts';
 import { transpileVector2D } from '../../misc/transpile-vector-2d.ts';
 import { transpileVector3D } from '../../misc/transpile-vector-3d.ts';
-import { IVector2D } from '../../types/vector-2d.type.ts';
-import { IVector3D } from '../../types/vector-3d.type.ts';
+import { IVector2d } from '../../types/vector-2d.type.ts';
+import { IVector3d } from '../../types/vector-3d.type.ts';
 
 // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#square
 
 export interface IRectangleOptions {
-  size: IVector2D;
+  size: IVector2d;
   center?: boolean;
 }
 

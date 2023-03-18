@@ -6,8 +6,5 @@
   "scripts": {
     "dev": "deno run --watch --allow-write src/main.ts ",
     "run": "deno run --allow-write src/main.ts"
-  },
-  "dependencies": {
-    "scad-js": "^0.5.0"
   }
 }

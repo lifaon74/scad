@@ -4,12 +4,12 @@ import { transpileNumber } from '../../misc/transpile-number.ts';
 import { transpileNumbersList } from '../../misc/transpile-numbers-list.ts';
 import { transpilePoints3DList } from '../../misc/transpile-points-3d-list.ts';
 import { INumbersList } from '../../types/numbers-list.type.ts';
-import { IPoints3DList } from '../../types/points-3d-list.type.ts';
+import { IPoints3dList } from '../../types/points-3d-list.type.ts';
 
 // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#polyhedron
 
 export interface IPolyhedronOptions {
-  points: IPoints3DList;
+  points: IPoints3dList;
   faces: readonly INumbersList[];
   convexity?: number,
 }

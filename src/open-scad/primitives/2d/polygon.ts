@@ -4,12 +4,12 @@ import { transpileNumber } from '../../misc/transpile-number.ts';
 import { transpileNumbersList } from '../../misc/transpile-numbers-list.ts';
 import { transpilePoints2DList } from '../../misc/transpile-points-2d-list.ts';
 import { INumbersList } from '../../types/numbers-list.type.ts';
-import { IPoints2DList } from '../../types/points-2d-list.type.ts';
+import { IPoints2dList } from '../../types/points-2d-list.type.ts';
 
 // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#polygon
 
 export interface IPolygonOptions {
-  points: IPoints2DList;
+  points: IPoints2dList;
   path?: readonly INumbersList[];
   convexity?: number,
 }

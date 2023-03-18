@@ -6,11 +6,12 @@ import { transpileNumber } from '../misc/transpile-number.ts';
 import { transpileVector3D } from '../misc/transpile-vector-3d.ts';
 import { IVector3d } from '../types/vector-3d.type.ts';
 
-// https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#linear_extrude
+// https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#Rotate_extrude
 
-// linear_extrude(height = 5, center = true, convexity = 10, twist = -fanrot, slices = 20, scale = 1.0, $fn = 16)
+// Rotate_extrude(height = 5, center = true, convexity = 10, twist = -fanrot, slices = 20, scale = 1.0, $fn = 16)
 
-export interface ILinearExtrudeOptions {
+// TODO
+export interface IRotateExtrudeOptions {
   height: number;
   center?: boolean;
   convexity?: number;
@@ -20,7 +21,7 @@ export interface ILinearExtrudeOptions {
   fragmentNumber?: number;
 }
 
-export function linearExtrude(
+export function rotateExtrude(
   {
     height,
     center = false,
@@ -29,11 +30,11 @@ export function linearExtrude(
     slices,
     scale,
     fragmentNumber,
-  }: ILinearExtrudeOptions,
+  }: IRotateExtrudeOptions,
   expressions: ILines[],
 ): ILines {
   return transpileFunctionBlockMulti(
-    'linear_extrude',
+    'Rotate_extrude',
     [
       ['height', [transpileNumber(height)]],
       ...optionalFunctionArgument(center, (center) => ['center', [transpileBoolean(center)]]),

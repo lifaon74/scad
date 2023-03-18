@@ -1,3 +1,3 @@
 
-export type IPoints2DList = readonly number[];
+export type IPoints2dList = readonly number[];
 
