@@ -5,6 +5,7 @@ import { deg } from '../open-scad/math/units/angle/deg-to-rad.ts';
 import { diameter } from '../open-scad/math/units/diameter-to-radius.ts';
 import { difference } from '../open-scad/modeling/difference.ts';
 import { union } from '../open-scad/modeling/union.ts';
+import { modifier } from '../open-scad/modifiers/modifier.ts';
 import { bom } from '../open-scad/others/bom.ts';
 import { $fn } from '../open-scad/others/fn.ts';
 import { group } from '../open-scad/others/group.ts';
@@ -22,7 +23,10 @@ import { round3d } from '../open-scad/transformations/round-3d.ts';
 import { translate } from '../open-scad/transformations/translate.ts';
 import { IVector3d } from '../open-scad/types/vector-3d.type.ts';
 import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/phillips-pan/screw-pillips-pan.constants.ts';
-import { aluminiumExtrusionRightAngleFixingBlock3D } from './aluminium-extrusion-fixing.ts/aluminium-extrusion-fixing.ts';
+import {
+  aluminiumExtrusionRightAngleFixingBlock2D, aluminiumExtrusionRightAngleFixingBlock2DPart1, aluminiumExtrusionRightAngleFixingBlock2DPart2,
+  aluminiumExtrusionRightAngleFixingBlock3D,
+} from './aluminium-extrusion-fixing.ts/aluminium-extrusion-fixing.ts';
 
 const OUT_PATH = './dist/debug.scad';
 
@@ -98,7 +102,7 @@ export function sofaTableFoot(
       round3d({ radius: 1 }, [
         roundEnd(),
         translate([0, 0, -(height / 2)], [
-          cube({ size: [footSize[0], footSize[1], height], center: true  }),
+          cube({ size: [footSize[0], footSize[1], height], center: true }),
         ]),
       ]),
     ]),
@@ -112,14 +116,13 @@ export function sofaTableFoot(
   ]);
 }
 
-
 /*--------------*/
 
 function project01(): ILines {
   const config = {
     extrusionSide: 20.4,
-    extrusionCoverLength: 40,
-    extrusionCoverThickness: 3,
+    extrusionCoverLength: 30,
+    extrusionCoverThickness: 2,
     extrusionAttachHoleRadius: diameter(3),
     extrusionAttachHoleOffset: 10,
     reinforcementLength: 30,
@@ -132,15 +135,19 @@ function project01(): ILines {
   return group([
     $fn(30),
     // aluminiumExtrusionRightAngleFixingBlock2D(config),
-    aluminiumExtrusionRightAngleFixingBlock3D(config),
+    aluminiumExtrusionRightAngleFixingBlock2DPart1(config),
+    // aluminiumExtrusionRightAngleFixingBlock2DPart2(config),
+    // modifier('none',
+    //   aluminiumExtrusionRightAngleFixingBlock3D(config),
+    // ),
   ]);
 }
 
 function project02(): ILines {
-   return group([
+  return group([
     $fn(30),
     // aluminiumExtrusionRightAngleFixingBlock2D(config),
-     sofaTableFoot({ footSize: [16, 10, 240] }),
+    sofaTableFoot({ footSize: [16, 10, 240] }),
   ]);
 }
 
@@ -180,8 +187,8 @@ export async function debugFunctionBased() {
   // const lines = example01();
   // const lines = example02();
   // const lines = aluminiumExtrusion20mm(cm(50));
-  // const lines = project01();
-  const lines = project02();
+  const lines = project01();
+  // const lines = project02();
 
   await exportToSCAD(OUT_PATH, lines);
 }

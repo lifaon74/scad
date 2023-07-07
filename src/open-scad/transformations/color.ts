@@ -9,13 +9,13 @@ import { IVector3d } from '../types/vector-3d.type.ts';
 
 
 export function color(
-  vector: IColor,
+  color: IColor,
   expressions: ILines[],
 ): ILines {
   return transpileFunctionBlockMulti(
     'color',
     [
-      ['c', [transpileColor(vector)]],
+      ['c', [transpileColor(color)]],
     ],
     expressions,
   );

@@ -1,13 +1,14 @@
 import { ILines } from '../../misc/lines/lines.type.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
-import { debug, none } from '../../open-scad/modifiers/modifier.ts';
+import { background, debug, none } from '../../open-scad/modifiers/modifier.ts';
 import { repeat } from '../../open-scad/others/repeat.ts';
 import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
 import { cube } from '../../open-scad/primitives/3d/cube.ts';
 import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
 import { polyhedron } from '../../open-scad/primitives/3d/polyhedron.ts';
 import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
+import { mirror } from '../../open-scad/transformations/mirror.ts';
 import { rotate } from '../../open-scad/transformations/rotate.ts';
 import { translate } from '../../open-scad/transformations/translate.ts';
 
@@ -252,7 +253,7 @@ export function aluminiumExtrusionRightAngleFixingBlock2DExtrusionRemove(
   const a: number = (extrusionSide * 0.5);
   const b: number = extrusionCoverThickness + a;
   const c: number = b + extrusionAttachHoleOffset;
-  const d: number = b +  extrusionCoverLength - extrusionAttachHoleOffset;
+  const d: number = b + extrusionCoverLength - extrusionAttachHoleOffset;
 
   const screwHole = (): ILines => {
     const offset: number = (extrusionCoverThickness * 0.5) + (extrusionSide * 0.5);
@@ -375,6 +376,176 @@ export function aluminiumExtrusionRightAngleFixingBlock2D(
         aluminiumExtrusionRightAngleFixingBlock2DExtraReinforcementWithAttachHoleRemove(options),
       ]),
     ),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemoveOptions {
+  extrusionSide: number;
+  extrusionCoverLength: number;
+  extrusionCoverThickness: number;
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemove(
+  {
+    extrusionSide,
+    extrusionCoverLength,
+    extrusionCoverThickness,
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemoveOptions,
+): ILines {
+  const extra: number = 1;
+
+  const l_x: number = extrusionCoverLength + (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
+  const t_x: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  const l_y: number = extrusionCoverThickness + extrusionSide + extra;
+  const t_y: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  const l_z: number = extrusionCoverThickness + extrusionSide + extra;
+  const t_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  return translate([t_x, t_y, t_z], [
+    cube({ size: [l_x, l_y, l_z], center: false }),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart1BottomRemoveOptions {
+  extrusionSide: number;
+  extrusionCoverLength: number;
+  extrusionCoverThickness: number;
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart1BottomRemove(
+  {
+    extrusionSide,
+    extrusionCoverLength,
+    extrusionCoverThickness,
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart1BottomRemoveOptions,
+): ILines {
+  const extra: number = 1;
+
+  const l_x: number = extrusionCoverLength + (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
+  const t_x: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  const l_z: number = extrusionCoverThickness + extra;
+  const t_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  return translate([t_x, t_x, t_z + 0.1], [
+    cube({ size: [l_x, l_x, l_z], center: false }),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart1ZExtrusionRemoveOptions {
+  extrusionSide: number;
+  extrusionCoverThickness: number;
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart1ZExtrusionRemove(
+  {
+    extrusionSide,
+    extrusionCoverThickness,
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart1ZExtrusionRemoveOptions,
+): ILines {
+  const extra: number = 1;
+
+  const l_x: number = extrusionSide;
+  const t_x: number = -(extrusionSide * 0.5);
+
+  const l_y: number = extrusionCoverThickness + (extra * 2);
+  const t_y: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+
+  const l_z: number = (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
+  const t_z: number = -(l_z * 0.5);
+
+  return translate([t_x, t_y, t_z], [
+    cube({ size: [l_x, l_y, l_z], center: false }),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart1RemoveOptions extends //
+  IAluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemoveOptions,
+  IAluminiumExtrusionRightAngleFixingBlock2DPart1BottomRemoveOptions,
+  IAluminiumExtrusionRightAngleFixingBlock2DPart1ZExtrusionRemoveOptions
+//
+{
+
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart1Remove(
+  {
+    ...options
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart1RemoveOptions,
+): ILines {
+  return union([
+    // xy extrusion remove
+    union([
+      rotate([0, 0, 0], [ // x
+        aluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemove(options),
+      ]),
+      rotate([0, 0, -90], [ // y
+        mirror([1, 0, 0], [
+          aluminiumExtrusionRightAngleFixingBlock2DPart1ExtrusionRemove(options),
+        ]),
+      ]),
+    ]),
+    // bottom remove
+    aluminiumExtrusionRightAngleFixingBlock2DPart1BottomRemove(options),
+    // z extrusion remove
+    aluminiumExtrusionRightAngleFixingBlock2DPart1ZExtrusionRemove(options),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart1Options extends //
+  IAluminiumExtrusionRightAngleFixingBlock2DOptions,
+  IAluminiumExtrusionRightAngleFixingBlock2DPart1RemoveOptions
+  //
+{
+
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart1(
+  {
+    ...options
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart1Options,
+): ILines {
+  return difference([
+    aluminiumExtrusionRightAngleFixingBlock2D(options),
+    none(
+      aluminiumExtrusionRightAngleFixingBlock2DPart1Remove(options),
+    ),
+  ]);
+}
+
+/*---*/
+
+export interface IAluminiumExtrusionRightAngleFixingBlock2DPart2Options extends //
+  IAluminiumExtrusionRightAngleFixingBlock2DOptions,
+  IAluminiumExtrusionRightAngleFixingBlock2DPart1RemoveOptions
+  //
+{
+
+}
+
+export function aluminiumExtrusionRightAngleFixingBlock2DPart2(
+  {
+    ...options
+  }: IAluminiumExtrusionRightAngleFixingBlock2DPart2Options,
+): ILines {
+  return difference([
+    aluminiumExtrusionRightAngleFixingBlock2D(options),
+    aluminiumExtrusionRightAngleFixingBlock2DPart1(options),
+    // none(
+    //   // aluminiumExtrusionRightAngleFixingBlock2DPart2Remove(options),
+    // ),
   ]);
 }
 
