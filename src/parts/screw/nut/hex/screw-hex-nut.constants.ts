@@ -24,6 +24,11 @@ export const HEX_NUT_M3: IScrewNutExternalOptions = {
   height: 2.4,
 };
 
+export const HEX_NUT_M3_SELF_LOCK: IScrewNutExternalOptions = {
+  ...HEX_NUT_M3,
+  height: 4.0,
+};
+
 export const HEX_NUT_M4: IScrewNutExternalOptions = {
   radius: diameter(7.0),
   height: 3.2,

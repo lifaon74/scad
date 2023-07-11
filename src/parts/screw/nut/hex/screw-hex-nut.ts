@@ -11,7 +11,7 @@ export function getRealScrewHexNutRadius(
   return radius / cos(30);
 }
 
-export interface IScrewNutExternalOptions extends Pick<ICylinderOptions, 'height' | 'radius'>{
+export interface IScrewNutExternalOptions extends Pick<ICylinderOptions, 'height' | 'radius'> {
 
 }
 
@@ -33,8 +33,6 @@ export interface IScrewHeyNutOptions extends Pick<IScrewNutExternalOptions, 'hei
   externalRadius: number;
   internalRadius: number;
 }
-
-
 
 export function screwHexNut(
   {
