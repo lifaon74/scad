@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "math/": "http://localhost:4873/@lifaon/math@1.3.0-dev.1693228787354/"
+  }
+}

@@ -4,7 +4,10 @@
   "main": "src/main.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "deno run --watch --allow-write src/main.ts ",
+    "dev": "NPM_CONFIG_REGISTRY=http://localhost:4873/ deno run --watch --allow-write src/main.ts ",
     "run": "deno run --allow-write src/main.ts"
+  },
+  "dependencies": {
+    "@lifaon/math": "latest"
   }
 }

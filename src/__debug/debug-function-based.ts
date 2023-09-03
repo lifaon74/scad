@@ -26,12 +26,16 @@ import { IVector3d } from '../open-scad/types/vector-3d.type.ts';
 import { SCREW_M3 } from '../parts/screw/body/screw-body.constants.ts';
 import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/phillips-pan/screw-pillips-pan.constants.ts';
 import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
+import { airVentPipeFixPart1, airVentPipeFixPart2, airVentPipeFixPart3 } from './air-vent/air-vent.ts';
 import {
   aluminiumExtrusionRightAngleFixingBlock2D, aluminiumExtrusionRightAngleFixingBlock2DPart1, aluminiumExtrusionRightAngleFixingBlock2DPart2,
   aluminiumExtrusionRightAngleFixingBlock3D,
 } from './aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts';
+import { rollingShutterHandle } from './rolling-shutter-handle/rolling-shutter-handle.ts';
 import { sofaTableFoot } from './sofa-table/sofa-table.ts';
 import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
+import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
+import { placedBorderRadius3d } from '../open-scad/primitives/3d/placed-border-radius-3d.ts';
 
 const OUT_PATH = './dist/debug.scad';
 
@@ -160,12 +164,121 @@ function project03(): ILines {
   ]);
 }
 
+function project04(): ILines {
+  const config = {
+    pipeInnerRadius: diameter(140),
+    pipeOuterRadius: diameter(141),
+    pipeInnerInsertHeight: 34,
+    pipeInnerInsertThickness: 2,
+    horizontalFixThickness: 2,
+    horizontalFixWidth: 14,
+    horizontalFixScrewRadius: SCREW_M3.radius,
+    horizontalFixScrewOffset: 7,
+    horizontalFixSpacing: 0.5,
+    pipeFixPartThickness: 3,
+    pipeFixPartHeight: 20,
+    pipeFixPartAttachWidth: 11,
+    pipeFixPartAttachThickness: 5,
+    pipeFixPartAttachScrewRadius: SCREW_M3.radius,
+  };
+
+  return group([
+    $fn(30),
+    // airVentPipeFixPart1(config),
+    // translate([0, 0, 12], [
+    //   airVentPipeFixPart2(config),
+    // ]),
+    translate([0, 0, 14.5], [
+      airVentPipeFixPart3(config),
+    ]),
+  ]);
+}
+
+function project05(): ILines {
+  const config = {
+    bottomWheelRadius: diameter(17),
+    bottomWheelHeight: 3
+  };
+
+  return group([
+    $fn(30),
+    rollingShutterHandle(config),
+  ]);
+}
+
+function project06(): ILines {
+  const handleZ = 14;
+  const handleFixZ = 30;
+  const borderRadius = 4;
+
+  const config: IGenericHandleOptions = {
+    handleX: 90,
+    handleY: 20,
+    handleZ: handleZ,
+    handleBorderRadius: borderRadius,
+    // handleFixX: 50,
+    handleFixX: handleFixZ + handleZ,
+    handleFixY: 20,
+    handleFixZ: handleFixZ + handleZ,
+    handleFixScrewRadius: SCREW_M3.radius,
+    handleFixScrewHeight: 10,
+    handleFixScrewHeadRadius: diameter(8),
+    handleFixBorderRadius: borderRadius,
+  };
+
+  return group([
+    $fn(16),
+    genericHandle(config),
+  ]);
+}
+
+
+function debugBorderRadius3d(): ILines {
+  return group([
+    $fn(30),
+    placedBorderRadius3d({
+      radius: 1,
+
+      points: [
+        0, 0, 0,
+        10, 0, 10,
+        10, 0, 0,
+        10, 10, 0,
+      ],
+      face1: [0, 1, 2],
+      face2: [2, 1, 3],
+
+      // points: [
+      //   0, 0, 0,
+      //   10, 0, 0,
+      //   10, 10, 0,
+      //   10, 0, 10,
+      // ],
+      // face1: [0, 1, 2],
+      // face2: [1, 3, 2],
+
+      // points: [
+      //   0, 0, 10,
+      //   10, 10, 10,
+      //   10, 0, 10,
+      //   10, 0, 0,
+      // ],
+      // face1: [0, 1, 2],
+      // face2: [3, 2, 1],
+    }),
+  ]);
+}
+
 /*--------------*/
 
 export async function debugFunctionBased() {
-  // const lines = project01();
+  const lines = project01();
   // const lines = project02();
-  const lines = project03();
+  // const lines = project03();
+  // const lines = project04();
+  // const lines = project05();
+  // const lines = project06();
+  // const lines = debugBorderRadius3d();
 
   await exportToSCAD(OUT_PATH, lines);
 }

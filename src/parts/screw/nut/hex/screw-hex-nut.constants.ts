@@ -4,6 +4,11 @@ import { IScrewNutExternalOptions } from './screw-hex-nut.ts';
 // https://www.engineersedge.com/hardware/standard_metric_hex_nuts_13728.htm
 // https://www.engineersedge.com/hardware/metric_hex_nuts_14056.htm
 
+export const HEX_NUT_M1: IScrewNutExternalOptions = {
+  radius: diameter(2.5),
+  height: 1.2,
+};
+
 export const HEX_NUT_M1_6: IScrewNutExternalOptions = {
   radius: diameter(3.2),
   height: 1.3,
