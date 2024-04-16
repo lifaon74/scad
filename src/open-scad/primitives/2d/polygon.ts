@@ -9,9 +9,9 @@ import { IPoints2dList } from '../../types/points-2d-list.type.ts';
 // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#polygon
 
 export interface IPolygonOptions {
-  points: IPoints2dList;
-  path?: readonly INumbersList[];
-  convexity?: number,
+  readonly points: IPoints2dList;
+  readonly path?: readonly INumbersList[];
+  readonly convexity?: number,
 }
 
 export function polygon(

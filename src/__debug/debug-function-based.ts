@@ -28,14 +28,28 @@ import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/p
 import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
 import { airVentPipeFixPart1, airVentPipeFixPart2, airVentPipeFixPart3 } from './air-vent/air-vent.ts';
 import {
-  aluminiumExtrusionRightAngleFixingBlock2D, aluminiumExtrusionRightAngleFixingBlock2DPart1, aluminiumExtrusionRightAngleFixingBlock2DPart2,
-  aluminiumExtrusionRightAngleFixingBlock3D,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZc,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZp,
+  aluminiumExtrusionRightAngleFixingBlockXpYvZc,
+  aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1,
+  aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2,
 } from './aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts';
+import {
+  aluminiumExtrusionRightAngleFixingPlate,
+  IAluminiumExtrusionRightAngleFixingPlateOptions,
+} from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing-plate.ts';
 import { rollingShutterHandle } from './rolling-shutter-handle/rolling-shutter-handle.ts';
 import { sofaTableFoot } from './sofa-table/sofa-table.ts';
 import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
 import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
 import { placedBorderRadius3d } from '../open-scad/primitives/3d/placed-border-radius-3d.ts';
+import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions } from './simple-lock/simple-lock.ts';
+import {
+  aluminiumExtrusionRightAngleFixing,
+  aluminiumExtrusionRightAngleFixingInitialBlock, IAluminiumExtrusionRightAngleFixingOptions,
+} from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing.ts';
 
 const OUT_PATH = './dist/debug.scad';
 
@@ -57,10 +71,50 @@ function project01(): ILines {
 
   return group([
     $fn(30),
-    // aluminiumExtrusionRightAngleFixingBlock2D(config),
-    // aluminiumExtrusionRightAngleFixingBlock2DPart1(config),
-    // aluminiumExtrusionRightAngleFixingBlock2DPart2(config),
-    aluminiumExtrusionRightAngleFixingBlock3D(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYpZc(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYpZp(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYvZc(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1(config),
+    aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2(config),
+  ]);
+}
+
+function project011(): ILines {
+  const config: IAluminiumExtrusionRightAngleFixingOptions = {
+    extrusionSide: 20,
+    extrusionCoverLength: 30,
+    screwBodyRadius: diameter(3),
+    screwBodyLength: 50,
+    screwHeadRadius: diameter(7.6),
+    screwHeadLength: 50,
+    screwOffsetX: 10,
+    screwOffsetY: 4,
+    screwsSpacing: 10,
+    screwsCount: 2,
+  };
+
+  return group([
+    $fn(30),
+    aluminiumExtrusionRightAngleFixing(config),
+  ]);
+}
+
+function project012(): ILines {
+  const config: IAluminiumExtrusionRightAngleFixingPlateOptions = {
+    extrusionSide: 20,
+    extrusionCoverLength: 30,
+    extrusionCoverThickness: 3,
+    screwBodyRadius: diameter(3),
+    screwBodyLength: 50,
+    screwsSpacing: 16,
+    screwsCount: 3,
+  };
+
+  return group([
+    $fn(30),
+    aluminiumExtrusionRightAngleFixingPlate(config),
   ]);
 }
 
@@ -268,17 +322,41 @@ function debugBorderRadius3d(): ILines {
     }),
   ]);
 }
+function project07(): ILines {
+  const config: ISimpleLockFixBlockOptions & ISimpleLockLockOptions = {
+    fixBlockX: 38,
+    fixBlockY: 20,
+    fixBlockZ: 3,
+    fixBlockFixScrewRadius: SCREW_M3.radius,
+    fixBlockFixScrewBorderOffset: 5,
+    lockScrewRadius: SCREW_M3.radius,
+    fixBlockLockTotalHeight: 6,
+    lockWidth: 15,
+    lockLength: 25,
+    lockHeight: 5,
+  };
+
+  return group([
+    $fn(16),
+    // simpleLockFixBlock(config),
+    simpleLockLock(config),
+  ]);
+}
+
 
 /*--------------*/
 
 export async function debugFunctionBased() {
-  const lines = project01();
+  // const lines = project01();
   // const lines = project02();
   // const lines = project03();
   // const lines = project04();
   // const lines = project05();
   // const lines = project06();
   // const lines = debugBorderRadius3d();
+  // const lines = project07();
+  // const lines = project011();
+  const lines = project012();
 
   await exportToSCAD(OUT_PATH, lines);
 }
