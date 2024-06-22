@@ -1,15 +1,22 @@
 {
-  "version": "2",
-  "remote": {},
-  "npm": {
+  "version": "3",
+  "packages": {
     "specifiers": {
-      "@lifaon/math@latest": "@lifaon/math@1.3.0-dev.1693228787354"
+      "npm:@lifaon/math@latest": "npm:@lifaon/math@1.3.0-dev.1693228787354"
     },
-    "packages": {
+    "npm": {
       "@lifaon/math@1.3.0-dev.1693228787354": {
         "integrity": "sha512-Xtq7+YRx/CS9Hi+9oSIjMKhTF6IRjqwaP2PbRAL1D0Xnc1uTHbTxqoEEO6cbyvu+xUfzqZ5Tjjs7Z6VVOKFBQg==",
         "dependencies": {}
       }
+    }
+  },
+  "remote": {},
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@lifaon/math@latest"
+      ]
     }
   }
 }
