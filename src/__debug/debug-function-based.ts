@@ -26,7 +26,6 @@ import { IVector3d } from '../open-scad/types/vector-3d.type.ts';
 import { SCREW_M3 } from '../parts/screw/body/screw-body.constants.ts';
 import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/phillips-pan/screw-pillips-pan.constants.ts';
 import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
-import { airVentPipeFixPart1, airVentPipeFixPart2, airVentPipeFixPart3 } from './air-vent/air-vent.ts';
 import {
   aluminiumExtrusionRightAngleFixingPlate,
   IAluminiumExtrusionRightAngleFixingPlateOptions,
@@ -36,7 +35,7 @@ import { sofaTableFoot } from './sofa-table/sofa-table.ts';
 import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
 import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
 import { placedBorderRadius3d } from '../open-scad/primitives/3d/placed-border-radius-3d.ts';
-import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions, IAluminiumExtrusionGridAttachOptions } from './simple-lock/simple-lock.ts';
+import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions } from './simple-lock/simple-lock.ts';
 import {
   aluminiumExtrusionRightAngleFixing,
   aluminiumExtrusionRightAngleFixingInitialBlock, IAluminiumExtrusionRightAngleFixingOptions,
@@ -229,15 +228,25 @@ function project04(): ILines {
     pipeFixPartAttachScrewRadius: SCREW_M3.radius,
   };
 
+  const doorFixConfig: IAirVentDoorFixOptions = {
+    length: 15,
+    minY: 3,
+    maxY: 5,
+    radius: diameter(10),
+    height: 8 + 5,
+    holeRadius: diameter(3),
+  };
+
   return group([
     $fn(30),
     // airVentPipeFixPart1(config),
     // translate([0, 0, 12], [
     //   airVentPipeFixPart2(config),
     // ]),
-    translate([0, 0, 14.5], [
-      airVentPipeFixPart3(config),
-    ]),
+    // translate([0, 0, 14.5], [
+    //   airVentPipeFixPart3(config),
+    // ]),
+    airVentDoorFix(doorFixConfig),
   ]);
 }
 
@@ -315,6 +324,7 @@ function debugBorderRadius3d(): ILines {
     }),
   ]);
 }
+
 function project07(): ILines {
   const config: ISimpleLockFixBlockOptions & ISimpleLockLockOptions = {
     fixBlockX: 38,
@@ -351,6 +361,7 @@ function project08(): ILines {
   ]);
 }
 
+
 /*--------------*/
 
 export async function debugFunctionBased() {
@@ -363,6 +374,7 @@ export async function debugFunctionBased() {
   // const lines = debugBorderRadius3d();
   // const lines = project07();
   // const lines = project011();
+  // const lines = project012();
   // const lines = project012();
   const lines = project08();
 

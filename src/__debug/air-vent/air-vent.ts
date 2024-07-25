@@ -3,8 +3,10 @@ import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
 import { debug } from '../../open-scad/modifiers/modifier.ts';
 import { repeat } from '../../open-scad/others/repeat.ts';
+import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
 import { cube } from '../../open-scad/primitives/3d/cube.ts';
 import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
+import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
 import { mirror } from '../../open-scad/transformations/mirror.ts';
 import { rotate } from '../../open-scad/transformations/rotate.ts';
 import { translate } from '../../open-scad/transformations/translate.ts';
@@ -290,6 +292,123 @@ export function airVentPipeFixPart3(
       airVentPipeFixPart3AttachBlock({
         ...options,
       }),
+    ]),
+  ]);
+}
+
+/*-----------------*/
+
+export interface IAirVentDoorFix2DOptions {
+  length: number;
+  minY: number;
+  maxY: number;
+  radius: number;
+}
+
+export function airVentDoorFix2D(
+  {
+    length,
+    minY,
+    maxY,
+    radius,
+  }: IAirVentDoorFix2DOptions,
+): ILines {
+  const b: number = radius + length;
+  const c: number = -minY;
+  const d: number = radius;
+  const e: number = -maxY;
+
+  return polygon({
+    points: [
+      0, 0,
+      b, 0,
+      b, c,
+      d, e,
+      0, e,
+    ],
+  });
+}
+
+export interface IAirVentDoorFix3DOptions extends IAirVentDoorFix2DOptions {
+}
+
+export function airVentDoorFix3D(
+  {
+    radius,
+    ...options
+  }: IAirVentDoorFix3DOptions,
+): ILines {
+  return linearExtrude({
+    height: radius * 2,
+    center: true,
+  }, [
+    airVentDoorFix2D({
+      ...options,
+      radius,
+    }),
+  ]);
+}
+
+export interface IAirVentDoorFixCylinderOptions {
+  height: number;
+  radius: number;
+}
+
+export function airVentDoorFixCylinder(
+  {
+    height,
+    radius,
+  }: IAirVentDoorFixCylinderOptions,
+): ILines {
+  return rotate([90, 0, 0], [
+    cylinder({
+      radius,
+      height,
+    }),
+  ]);
+}
+
+export interface IAirVentDoorFixCylinderHoleOptions {
+  height: number;
+  holeRadius: number;
+}
+
+export function airVentDoorFixCylinderHole(
+  {
+    height,
+    holeRadius,
+  }: IAirVentDoorFixCylinderHoleOptions,
+): ILines {
+  return rotate([90, 0, 0], [
+    translate([0, 0, -0.5], [
+      cylinder({
+        radius: holeRadius,
+        height: height + 1,
+      }),
+    ]),
+  ]);
+}
+
+export interface IAirVentDoorFixOptions extends //
+  IAirVentDoorFix3DOptions,
+  IAirVentDoorFixCylinderOptions,
+  IAirVentDoorFixCylinderHoleOptions
+  //
+{
+}
+
+export function airVentDoorFix(
+  {
+    ...options
+  }: IAirVentDoorFixOptions,
+): ILines {
+  return rotate([-90, 0, 0], [
+    difference([
+      union([
+        airVentDoorFix3D(options),
+        airVentDoorFixCylinder(options),
+      ]),
+      airVentDoorFixCylinderHole(options),
     ])
   ]);
 }
