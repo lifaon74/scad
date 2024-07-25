@@ -28,15 +28,6 @@ import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/p
 import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
 import { airVentPipeFixPart1, airVentPipeFixPart2, airVentPipeFixPart3 } from './air-vent/air-vent.ts';
 import {
-  aluminiumExtrusionRightAngleFixingBlockXpYpZc,
-  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1,
-  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2,
-  aluminiumExtrusionRightAngleFixingBlockXpYpZp,
-  aluminiumExtrusionRightAngleFixingBlockXpYvZc,
-  aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1,
-  aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2,
-} from './aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts';
-import {
   aluminiumExtrusionRightAngleFixingPlate,
   IAluminiumExtrusionRightAngleFixingPlateOptions,
 } from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing-plate.ts';
@@ -45,11 +36,13 @@ import { sofaTableFoot } from './sofa-table/sofa-table.ts';
 import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
 import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
 import { placedBorderRadius3d } from '../open-scad/primitives/3d/placed-border-radius-3d.ts';
-import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions } from './simple-lock/simple-lock.ts';
+import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions, IAluminiumExtrusionGridAttachOptions } from './simple-lock/simple-lock.ts';
 import {
   aluminiumExtrusionRightAngleFixing,
   aluminiumExtrusionRightAngleFixingInitialBlock, IAluminiumExtrusionRightAngleFixingOptions,
 } from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing.ts';
+import { aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2 } from './aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts';
+import { aluminiumExtrusionGridAttach } from './aluminium-extrusion-grid-attach/aluminium-extrusion-grid-attach.ts';
 
 const OUT_PATH = './dist/debug.scad';
 
@@ -343,6 +336,20 @@ function project07(): ILines {
   ]);
 }
 
+function project08(): ILines {
+  const config: IAluminiumExtrusionGridAttachOptions = {
+    holesSpacing: 19,
+    holesRadius: diameter(3),
+    xLength:  19 * 2 - 1,
+    yLength: 18,
+    zLength: 4,
+  };
+
+  return group([
+    $fn(16),
+    aluminiumExtrusionGridAttach(config),
+  ]);
+}
 
 /*--------------*/
 
@@ -356,7 +363,8 @@ export async function debugFunctionBased() {
   // const lines = debugBorderRadius3d();
   // const lines = project07();
   // const lines = project011();
-  const lines = project012();
+  // const lines = project012();
+  const lines = project08();
 
   await exportToSCAD(OUT_PATH, lines);
 }
