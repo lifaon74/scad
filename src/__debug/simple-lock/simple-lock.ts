@@ -1,17 +1,17 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { union } from '../../open-scad/modeling/union.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
-import { minkowski } from '../../open-scad/transformations/minkowski.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
+import { minkowski } from '../../open-scad/build/transformations/minkowski.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
-import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
-import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
+import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
+import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
 import { debug } from '../../open-scad/modifiers/modifier.ts';
 import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
-import { mirror } from '../../open-scad/transformations/mirror.ts';
-import { sphere } from '../../open-scad/primitives/3d/sphere.ts';
+import { mirror } from '../../open-scad/build/transformations/mirror.ts';
+import { sphere } from '../../open-scad/build/primitives/3d/sphere.ts';
 import { diameter } from '../../open-scad/math/units/diameter-to-radius.ts';
 
 /*---*/
@@ -40,7 +40,7 @@ export function simpleLockFixBlock(
     fixBlockLockTotalHeight,
     lockWidth,
   }: ISimpleLockFixBlockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   const fixScrew = () => {
@@ -111,7 +111,7 @@ export function simpleLockLock(
     lockHeight,
     fixBlockLockTotalHeight,
   }: ISimpleLockLockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   return translate([0, 0, fixBlockLockTotalHeight + 0.5], [

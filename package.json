@@ -8,6 +8,5 @@
     "run": "deno run --allow-write src/main.ts"
   },
   "dependencies": {
-    "@lifaon/math": "latest"
   }
 }

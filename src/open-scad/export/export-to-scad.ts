@@ -1,9 +1,9 @@
 import { linesToString } from '../../misc/lines/functions/lines-to-string.ts';
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 
-export function exportToSCAD(
+export function exportToScad(
   path: string,
-  lines: ILines,
+  lines: Lines,
 ): Promise<void> {
   return Deno.writeTextFile(path, linesToString(lines), {
     create: true,

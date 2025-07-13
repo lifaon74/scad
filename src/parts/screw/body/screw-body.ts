@@ -1,13 +1,13 @@
-import { ILines } from '../../../misc/lines/lines.type.ts';
-import { cylinder, ICylinderOptions } from '../../../open-scad/primitives/3d/cylinder.ts';
+import { Lines } from '../../../misc/lines/lines.ts';
+import { cylinder, CylinderOptions } from '../../../open-scad/build/primitives/3d/cylinder.ts';
 
-export interface IScrewBodyOptions extends Pick<ICylinderOptions, 'height' | 'radius'>{
+export interface IScrewBodyOptions extends Pick<CylinderOptions, 'height' | 'radius'>{
 
 }
 
 export function screwBody(
   options: IScrewBodyOptions,
-): ILines {
+): Lines {
   return cylinder({
     ...options,
     fragmentNumber: 30,

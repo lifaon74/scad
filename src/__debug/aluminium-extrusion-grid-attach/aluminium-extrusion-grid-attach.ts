@@ -1,8 +1,8 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { union } from '../../open-scad/modeling/union.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 
 export interface IAluminiumExtrusionGridAttachOptions {
@@ -22,7 +22,7 @@ export function aluminiumExtrusionGridAttach(
     zLength,
 
   }: IAluminiumExtrusionGridAttachOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
   return difference([
     cube({

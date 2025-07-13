@@ -1,14 +1,14 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
 import { modifier } from '../../open-scad/modifiers/modifier.ts';
-import { repeat } from '../../open-scad/others/repeat.ts';
-import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
+import { repeat } from '../../open-scad/build/others/repeat.ts';
+import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
 
 /*-------------------------------------*/
 
@@ -22,7 +22,7 @@ export function aluminiumExtrusionRightAngleFixingInitialBlock(
     extrusionSide,
     extrusionCoverLength,
   }: IAluminiumExtrusionRightAngleFixingInitialBlockOptions,
-): ILines {
+): Lines {
   return linearExtrude({
     height: extrusionSide,
     center: true,
@@ -52,7 +52,7 @@ export function aluminiumExtrusionRightAngleFixingScrewRemove(
     screwHeadRadius,
     screwHeadLength,
   }: IAluminiumExtrusionRightAngleFixingScrewRemoveOptions,
-): ILines {
+): Lines {
   return rotate([-90, 0, 0], [
     union([
       cylinder({
@@ -87,7 +87,7 @@ export function aluminiumExtrusionRightAngleFixingScrewsRemove(
     screwsCount,
     ...options
   }: IAluminiumExtrusionRightAngleFixingScrewsRemoveOptions,
-): ILines {
+): Lines {
   return modifier('debug',
     union([
       repeat(screwsCount, (index: number) => union([
@@ -115,7 +115,7 @@ export interface IAluminiumExtrusionRightAngleFixingOptions extends //
 
 export function aluminiumExtrusionRightAngleFixing(
   options: IAluminiumExtrusionRightAngleFixingOptions,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingInitialBlock(options),
     aluminiumExtrusionRightAngleFixingScrewsRemove(options),

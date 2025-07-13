@@ -1,17 +1,17 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { union } from '../../open-scad/modeling/union.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
-import { minkowski } from '../../open-scad/transformations/minkowski.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
+import { minkowski } from '../../open-scad/build/transformations/minkowski.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
-import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
-import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
+import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
+import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
 import { debug } from '../../open-scad/modifiers/modifier.ts';
 import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
-import { mirror } from '../../open-scad/transformations/mirror.ts';
-import { sphere } from '../../open-scad/primitives/3d/sphere.ts';
+import { mirror } from '../../open-scad/build/transformations/mirror.ts';
+import { sphere } from '../../open-scad/build/primitives/3d/sphere.ts';
 
 /*---*/
 
@@ -29,7 +29,7 @@ export function genericHandleHandleBlock(
     handleZ,
     handleBorderRadius,
   }: IGenericHandleHandleBlockOptions,
-): ILines {
+): Lines {
   return union([
     translate([handleX * -0.5, handleY * -0.5 + handleBorderRadius, -handleZ + handleBorderRadius], [
       minkowski([
@@ -63,7 +63,7 @@ export function genericHandleFixMainBlock(
     handleFixZ,
     handleFixBorderRadius,
   }: IGenericHandleFixMainBlockOptions,
-): ILines {
+): Lines {
 
   // debug(
   //   placedBorderRadius3d({
@@ -158,7 +158,7 @@ export function genericHandleFixBlockScrewRemove(
     handleFixX,
     handleFixZ,
   }: IGenericHandleFixBlockScrewRemoveOptions,
-): ILines {
+): Lines {
   const extra: number = 5;
   const screwHeadHeight: number = handleFixZ - handleFixScrewHeight + extra;
   const screwHeight: number = handleFixScrewHeight + extra;
@@ -194,7 +194,7 @@ export interface IGenericHandleFixBlockOptions extends //
 
 export function genericHandleFixBlock(
   options: IGenericHandleFixBlockOptions,
-): ILines {
+): Lines {
   return difference([
     genericHandleFixMainBlock(options),
     genericHandleFixBlockScrewRemove(options),
@@ -220,7 +220,7 @@ export function genericHandle(
     handleFixBorderRadius,
     ...options
   }: IGenericHandleOptions,
-): ILines {
+): Lines {
   const t_x: number = handleX * 0.5;
   const t_z: number = -handleFixZ;
 

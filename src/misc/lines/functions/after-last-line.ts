@@ -1,10 +1,10 @@
-import { ILines } from '../lines.type.ts';
+import { Lines } from '../lines.ts';
 import { linesToString } from './lines-to-string.ts';
 
 export function afterLastLine(
-  linesA: ILines,
-  linesB: ILines,
-): ILines {
+  linesA: Lines,
+  linesB: Lines,
+): Lines {
   return [
     ...linesA.slice(0, -1),
     `${linesToString(linesA.slice(-1))}${linesToString(linesB.slice(0, 1))}`,
@@ -13,8 +13,8 @@ export function afterLastLine(
 }
 
 export function inlineLastLines(
-  ...lines: ILines[]
-): ILines {
+  ...lines: Lines[]
+): Lines {
   return lines.reduce(afterLastLine, []);
 }
 

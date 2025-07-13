@@ -1,28 +1,28 @@
-import { ILines } from '../misc/lines/lines.type.ts';
+import { Lines } from '../misc/lines/lines.ts';
 import { ALUMINIUM } from '../open-scad/color/colors.constants.ts';
-import { exportToSCAD } from '../open-scad/export/export-to-scad.ts';
+import { exportToScad } from '../open-scad/export/export-to-scad.ts';
 import { deg } from '../open-scad/math/units/angle/deg-to-rad.ts';
 import { diameter } from '../open-scad/math/units/diameter-to-radius.ts';
 import { difference } from '../open-scad/modeling/difference.ts';
 import { union } from '../open-scad/modeling/union.ts';
 import { background, debug, modifier, none } from '../open-scad/modifiers/modifier.ts';
-import { bom } from '../open-scad/others/bom.ts';
-import { $fn } from '../open-scad/others/fn.ts';
-import { group } from '../open-scad/others/group.ts';
-import { circle } from '../open-scad/primitives/2d/circle.ts';
-import { cube } from '../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../open-scad/primitives/3d/cylinder.ts';
-import { sphere } from '../open-scad/primitives/3d/sphere.ts';
-import { color } from '../open-scad/transformations/color.ts';
-import { linearExtrude } from '../open-scad/transformations/linear-extrude.ts';
-import { minkowski } from '../open-scad/transformations/minkowski.ts';
-import { mirror } from '../open-scad/transformations/mirror.ts';
-import { offset2d } from '../open-scad/transformations/offset-2d.ts';
-import { offset3d } from '../open-scad/transformations/offset-3d.ts';
-import { rotate } from '../open-scad/transformations/rotate.ts';
-import { round3d } from '../open-scad/transformations/round-3d.ts';
-import { translate } from '../open-scad/transformations/translate.ts';
-import { IVector3d } from '../open-scad/types/vector-3d.type.ts';
+import { bom } from '../open-scad/build/others/bom.ts';
+import { $fn } from '../open-scad/build/others/fn.ts';
+import { group } from '../open-scad/build/others/group.ts';
+import { circle } from '../open-scad/build/primitives/2d/circle.ts';
+import { cube } from '../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../open-scad/build/primitives/3d/cylinder.ts';
+import { sphere } from '../open-scad/build/primitives/3d/sphere.ts';
+import { color } from '../open-scad/build/transformations/color.ts';
+import { linearExtrude } from '../open-scad/build/transformations/linear-extrude.ts';
+import { minkowski } from '../open-scad/build/transformations/minkowski.ts';
+import { mirror } from '../open-scad/build/transformations/mirror.ts';
+import { offset2d } from '../open-scad/build/transformations/offset-2d.ts';
+import { offset3d } from '../open-scad/build/transformations/offset-3d.ts';
+import { rotate } from '../open-scad/build/transformations/rotate.ts';
+import { round3d } from '../open-scad/build/transformations/round-3d.ts';
+import { translate } from '../open-scad/build/transformations/translate.ts';
+import { Vector3d } from '../open-scad/types/vector-3d.ts';
 import { SCREW_M3 } from '../parts/screw/body/screw-body.constants.ts';
 import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/phillips-pan/screw-pillips-pan.constants.ts';
 import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
@@ -34,7 +34,7 @@ import { rollingShutterHandle } from './rolling-shutter-handle/rolling-shutter-h
 import { sofaTableFoot } from './sofa-table/sofa-table.ts';
 import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
 import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
-import { placedBorderRadius3d } from '../open-scad/primitives/3d/placed-border-radius-3d.ts';
+import { placedBorderRadius3d } from '../open-scad/build/primitives/3d/placed-border-radius-3d.ts';
 import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions } from './simple-lock/simple-lock.ts';
 import {
   aluminiumExtrusionRightAngleFixing,
@@ -47,7 +47,7 @@ const OUT_PATH = './dist/debug.scad';
 
 /*--------------*/
 
-function project01(): ILines {
+function project01(): Lines {
   const config = {
     extrusionSide: 20.4,
     extrusionCoverLength: 30,
@@ -73,7 +73,7 @@ function project01(): ILines {
   ]);
 }
 
-function project011(): ILines {
+function project011(): Lines {
   const config: IAluminiumExtrusionRightAngleFixingOptions = {
     extrusionSide: 20,
     extrusionCoverLength: 30,
@@ -93,7 +93,7 @@ function project011(): ILines {
   ]);
 }
 
-function project012(): ILines {
+function project012(): Lines {
   const config: IAluminiumExtrusionRightAngleFixingPlateOptions = {
     extrusionSide: 20,
     extrusionCoverLength: 30,
@@ -110,14 +110,14 @@ function project012(): ILines {
   ]);
 }
 
-function project02(): ILines {
+function project02(): Lines {
   return group([
     $fn(30),
     sofaTableFoot({ footSize: [16, 10, 240] }),
   ]);
 }
 
-function project03(): ILines {
+function project03(): Lines {
   const config = {
     rollerOuterRadius: diameter(16),
     rollerInnerRadius: diameter(14),
@@ -210,7 +210,7 @@ function project03(): ILines {
   ]);
 }
 
-function project04(): ILines {
+function project04(): Lines {
   const config = {
     pipeInnerRadius: diameter(140),
     pipeOuterRadius: diameter(141),
@@ -250,7 +250,7 @@ function project04(): ILines {
   ]);
 }
 
-function project05(): ILines {
+function project05(): Lines {
   const config = {
     bottomWheelRadius: diameter(17),
     bottomWheelHeight: 3
@@ -262,7 +262,7 @@ function project05(): ILines {
   ]);
 }
 
-function project06(): ILines {
+function project06(): Lines {
   const handleZ = 14;
   const handleFixZ = 30;
   const borderRadius = 4;
@@ -289,7 +289,7 @@ function project06(): ILines {
 }
 
 
-function debugBorderRadius3d(): ILines {
+function debugBorderRadius3d(): Lines {
   return group([
     $fn(30),
     placedBorderRadius3d({
@@ -325,7 +325,7 @@ function debugBorderRadius3d(): ILines {
   ]);
 }
 
-function project07(): ILines {
+function project07(): Lines {
   const config: ISimpleLockFixBlockOptions & ISimpleLockLockOptions = {
     fixBlockX: 38,
     fixBlockY: 20,
@@ -346,7 +346,7 @@ function project07(): ILines {
   ]);
 }
 
-function project08(): ILines {
+function project08(): Lines {
   const config: IAluminiumExtrusionGridAttachOptions = {
     holesSpacing: 19,
     holesRadius: diameter(3),
@@ -378,5 +378,5 @@ export async function debugFunctionBased() {
   // const lines = project012();
   const lines = project08();
 
-  await exportToSCAD(OUT_PATH, lines);
+  await exportToScad(OUT_PATH, lines);
 }

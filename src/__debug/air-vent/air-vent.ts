@@ -1,15 +1,15 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
 import { debug } from '../../open-scad/modifiers/modifier.ts';
-import { repeat } from '../../open-scad/others/repeat.ts';
-import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
-import { mirror } from '../../open-scad/transformations/mirror.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
+import { repeat } from '../../open-scad/build/others/repeat.ts';
+import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
+import { mirror } from '../../open-scad/build/transformations/mirror.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
 
 /*---*/
 
@@ -27,7 +27,7 @@ export function airVentPipeInnerInsertBlock(
     pipeInnerInsertHeight,
     pipeInnerInsertThickness,
   }: IAirVentPipeInnerInsertBlockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   return difference([
@@ -68,10 +68,10 @@ export function airVentPipeHorizontalFixFixBlock(
     horizontalFixScrewRadius,
     horizontalFixScrewOffset = (horizontalFixOuterRadius - horizontalFixInnerRadius) * 0.5,
   }: IAirVentPipeHorizontalFixBlockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
-  const screwHole = (): ILines => {
+  const screwHole = (): Lines => {
     const offset: number = horizontalFixOuterRadius - horizontalFixScrewOffset;
 
     return translate([offset, 0, -extra], [
@@ -82,8 +82,8 @@ export function airVentPipeHorizontalFixFixBlock(
     ]);
   };
 
-  const screwHolesAround = (): ILines => {
-    return repeat(4, (index: number): ILines => {
+  const screwHolesAround = (): Lines => {
+    return repeat(4, (index: number): Lines => {
       return rotate([0, 0, 90 * index], [
         screwHole(),
       ]);
@@ -132,7 +132,7 @@ export function airVentPipeFixPart1(
     horizontalFixWidth,
     ...options
   }: IAirVentPipeFixPart1Options,
-): ILines {
+): Lines {
   return union([
     airVentPipeInnerInsertBlock({
       ...options,
@@ -167,7 +167,7 @@ export function airVentPipeFixPart2(
     horizontalFixSpacing,
     ...options
   }: IAirVentPipeFixPart2Options,
-): ILines {
+): Lines {
   return union([
     airVentPipeHorizontalFixFixBlock({
       ...options,
@@ -193,7 +193,7 @@ export function airVentPipeFixPart3CircleBlock(
     pipeFixPartThickness,
     pipeFixPartHeight,
   }: IAirVentPipeFixPart3CircleBlockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
   const outerRadius: number = (pipeOuterRadius + pipeFixPartThickness);
   const removeHeight: number = (pipeFixPartHeight + (extra * 2));
@@ -244,7 +244,7 @@ export function airVentPipeFixPart3AttachBlock(
     pipeFixPartThickness,
     pipeFixPartHeight,
   }: IAirVentPipeFixPart3AttachBlockOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   return translate([pipeOuterRadius, -pipeFixPartAttachThickness, 0], [
@@ -280,7 +280,7 @@ export function airVentPipeFixPart3(
   {
     ...options
   }: IAirVentPipeFixPart3Options,
-): ILines {
+): Lines {
   return union([
     airVentPipeFixPart3CircleBlock({
       ...options,
@@ -312,7 +312,7 @@ export function airVentDoorFix2D(
     maxY,
     radius,
   }: IAirVentDoorFix2DOptions,
-): ILines {
+): Lines {
   const b: number = radius + length;
   const c: number = -minY;
   const d: number = radius;
@@ -337,7 +337,7 @@ export function airVentDoorFix3D(
     radius,
     ...options
   }: IAirVentDoorFix3DOptions,
-): ILines {
+): Lines {
   return linearExtrude({
     height: radius * 2,
     center: true,
@@ -359,7 +359,7 @@ export function airVentDoorFixCylinder(
     height,
     radius,
   }: IAirVentDoorFixCylinderOptions,
-): ILines {
+): Lines {
   return rotate([90, 0, 0], [
     cylinder({
       radius,
@@ -378,7 +378,7 @@ export function airVentDoorFixCylinderHole(
     height,
     holeRadius,
   }: IAirVentDoorFixCylinderHoleOptions,
-): ILines {
+): Lines {
   return rotate([90, 0, 0], [
     translate([0, 0, -0.5], [
       cylinder({
@@ -401,7 +401,7 @@ export function airVentDoorFix(
   {
     ...options
   }: IAirVentDoorFixOptions,
-): ILines {
+): Lines {
   return rotate([-90, 0, 0], [
     difference([
       union([

@@ -1,16 +1,16 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
 import { background, debug, none } from '../../open-scad/modifiers/modifier.ts';
-import { repeat } from '../../open-scad/others/repeat.ts';
-import { polygon } from '../../open-scad/primitives/2d/polygon.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { polyhedron } from '../../open-scad/primitives/3d/polyhedron.ts';
-import { linearExtrude } from '../../open-scad/transformations/linear-extrude.ts';
-import { mirror } from '../../open-scad/transformations/mirror.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
+import { repeat } from '../../open-scad/build/others/repeat.ts';
+import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { polyhedron } from '../../open-scad/build/primitives/3d/polyhedron.ts';
+import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
+import { mirror } from '../../open-scad/build/transformations/mirror.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
 
 /*-------------NAMING-----------------*/
 
@@ -33,7 +33,7 @@ export function aluminiumExtrusionRightAngleFixingPlate(
     extrusionCoverThickness,
     reinforcementLength,
   }: IAluminiumExtrusionRightAngleFixingPlateOptions,
-): ILines {
+): Lines {
   const a: number = extrusionCoverThickness + (extrusionSide * 0.5);
   const b: number = a + extrusionCoverLength;
   const c: number = a + reinforcementLength;
@@ -65,7 +65,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPlenty(
     extrusionSide,
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPlentyOptions,
-): ILines {
+): Lines {
   const height: number = (extrusionCoverThickness * 2) + extrusionSide;
   return linearExtrude({
     height,
@@ -93,7 +93,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpBlock(
     extrusionCoverLength,
     extrusionCoverThickness,
   }: IAluminiumExtrusionRightAngleFixingBlockXpBlockOptions,
-): ILines {
+): Lines {
   const x: number = extrusionCoverThickness + extrusionSide + extrusionCoverThickness + extrusionCoverLength;
   const y: number = extrusionCoverThickness + extrusionSide + extrusionCoverThickness;
   const z: number = y;
@@ -123,7 +123,7 @@ export function aluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemove(
     reinforcementLength,
     extraReinforcementLength,
   }: IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions,
-): ILines {
+): Lines {
   const a: number = extrusionCoverThickness + (extrusionSide * 0.5);
   const b: number = a + extraReinforcementLength;
   const c: number = a + reinforcementLength + 1;
@@ -150,7 +150,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementR
     extrusionSide,
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementRemoveOptions,
-): ILines {
+): Lines {
   return linearExtrude({
     height: extrusionSide,
     center: true,
@@ -176,7 +176,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementA
     extrusionCoverThickness,
     extraReinforcementLength,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementAngleBlockOptions,
-): ILines {
+): Lines {
   const c: number = (extrusionCoverThickness + (extrusionSide * 0.5));
   const a: number = c - 1;
   const b: number = c + extraReinforcementLength;
@@ -211,7 +211,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCorner(
     extrusionCoverThickness,
     removeAngleCornerSize,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCornerOptions,
-): ILines {
+): Lines {
   const c: number = extrusionCoverThickness + (extrusionSide * 0.5);
   const a: number = -1 - c;
   const b: number = removeAngleCornerSize - c;
@@ -247,7 +247,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementW
     extraReinforcementAttachHoleRadius,
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions,
-): ILines {
+): Lines {
   const extraReinforcementAttachHoleHeight: number = (extrusionCoverThickness * 2) + extrusionSide + 1;
   const a: number = extrusionCoverThickness + (extrusionSide * 0.5) + extraReinforcementAttachHoleOffset;
 
@@ -285,13 +285,13 @@ export function aluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove(
     extrusionAttachHoleRadius,
     extrusionAttachHoleOffset,
   }: IAluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove,
-): ILines {
+): Lines {
   const a: number = (extrusionSide * 0.5);
   const b: number = extrusionCoverThickness + a;
   const c: number = b + extrusionAttachHoleOffset;
   const d: number = b + extrusionCoverLength - extrusionAttachHoleOffset;
 
-  const screwHole = (): ILines => {
+  const screwHole = (): Lines => {
     const offset: number = (extrusionCoverThickness * 0.5) + (extrusionSide * 0.5);
     const screwHoleHeight: number = offset * 1.5;
     // const screwHoleHeight: number = ((extrusionCoverThickness * 2) + extrusionSide) * 2;
@@ -307,8 +307,8 @@ export function aluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove(
     ]);
   };
 
-  const screwHolesAround = (): ILines => {
-    return repeat(4, (index: number): ILines => {
+  const screwHolesAround = (): Lines => {
+    return repeat(4, (index: number): Lines => {
       return rotate([90 * index, 0, 0], [
         screwHole(),
       ]);
@@ -344,10 +344,10 @@ export function aluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove(
     extrusionCoverThickness,
     extrusionAttachHoleRadius,
   }: IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove,
-): ILines {
+): Lines {
   const extrusionHeight: number = ((extrusionCoverThickness * 2) + extrusionSide) * 4;
 
-  const screwHole = (): ILines => {
+  const screwHole = (): Lines => {
     const offset: number = (extrusionCoverThickness * 0.5) + (extrusionSide * 0.5);
     const screwHoleHeight: number = offset * 2;
 
@@ -399,7 +399,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZc(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpYpZcPlenty(options),
     debug(
@@ -435,7 +435,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemove(
     extrusionCoverLength,
     extrusionCoverThickness,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemoveOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   const l_x: number = extrusionCoverLength + (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
@@ -465,7 +465,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Remove(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1RemoveOptions,
-): ILines {
+): Lines {
   return union([
     // xy extrusion remove
     rotate([0, 0, 0], [ // x
@@ -493,7 +493,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Options,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpYpZc(options),
     none(
@@ -516,7 +516,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Remove(
     extrusionCoverLength,
     extrusionCoverThickness,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2RemoveOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   const l_x: number = extrusionCoverLength + extrusionCoverThickness + extrusionSide + extra;
@@ -544,7 +544,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Options,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpYpZc(options),
     none(
@@ -570,7 +570,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZp(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZpOptions,
-): ILines {
+): Lines {
   return difference([
     union([
       rotate([0, 0, 0], [ // xy plan
@@ -633,7 +633,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZc(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpBlock(options),
     none(
@@ -661,7 +661,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Remove(
     extrusionCoverLength,
     extrusionCoverThickness,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1RemoveOptions,
-): ILines {
+): Lines {
   const extra: number = 1;
 
   const l1_x: number = extra + extrusionCoverLength + extrusionCoverThickness + extrusionSide;
@@ -708,7 +708,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Options,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpYvZc(options),
     debug(
@@ -733,7 +733,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2(
   {
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart2Options,
-): ILines {
+): Lines {
   return difference([
     aluminiumExtrusionRightAngleFixingBlockXpYvZc(options),
     debug(

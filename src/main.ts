@@ -1,7 +1,8 @@
-import { debugFunctionBased } from './__debug/debug-function-based.ts';
+import { houseProject } from './__projects/house/house.project.ts';
 
 async function main(): Promise<void> {
-  await debugFunctionBased();
+  // await debugFunctionBased();
+  await houseProject();
   // await debugClassBased();
   // await debugPartBased();
 }

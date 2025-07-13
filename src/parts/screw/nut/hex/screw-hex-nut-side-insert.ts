@@ -1,7 +1,7 @@
-import { ILines } from '../../../../misc/lines/lines.type.ts';
+import { Lines } from '../../../../misc/lines/lines.ts';
 import { union } from '../../../../open-scad/modeling/union.ts';
-import { cube } from '../../../../open-scad/primitives/3d/cube.ts';
-import { translate } from '../../../../open-scad/transformations/translate.ts';
+import { cube } from '../../../../open-scad/build/primitives/3d/cube.ts';
+import { translate } from '../../../../open-scad/build/transformations/translate.ts';
 import { IScrewNutExternalOptions, screwHexNutExternal } from './screw-hex-nut.ts';
 
 export interface IScrewHeyNutSideInsertOptions extends IScrewNutExternalOptions {
@@ -15,7 +15,7 @@ export function screwHexNutSideInsert(
     insertLength,
     ...options
   }: IScrewHeyNutSideInsertOptions,
-): ILines {
+): Lines {
   return union([
     screwHexNutExternal({
       ...options,

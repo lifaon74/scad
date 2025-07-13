@@ -1,7 +1,7 @@
-import { ILines } from '../lines.type.ts';
+import { Lines } from '../lines.ts';
 
 export function linesToString(
-  lines: ILines,
+  lines: Lines,
   separator: string = '\n',
 ): string {
   return lines.join(separator);

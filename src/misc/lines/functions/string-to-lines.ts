@@ -1,9 +1,9 @@
-import { ILines } from '../lines.type.ts';
+import { Lines } from '../lines.ts';
 
 export function stringToLines(
   input: string,
-): ILines {
-  const lines: ILines = stringToLinesRaw(input);
+): Lines {
+  const lines: Lines = stringToLinesRaw(input);
 
   let indent: string = '';
 
@@ -44,7 +44,7 @@ export function stringToLines(
 
 export function stringToLinesRaw(
   input: string,
-): ILines {
+): Lines {
   return input.split(/\r?\n/);
 }
 

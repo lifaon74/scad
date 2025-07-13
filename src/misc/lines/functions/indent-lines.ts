@@ -1,8 +1,8 @@
-import { ILines } from '../lines.type.ts';
+import { Lines } from '../lines.ts';
 
 export function indentLines(
-  lines: ILines,
+  lines: Lines,
   indent: string = '  ',
-): ILines {
+): Lines {
   return lines.map((line: string) => `${indent}${line}`);
 }

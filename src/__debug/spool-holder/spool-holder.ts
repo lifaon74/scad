@@ -1,14 +1,14 @@
-import { ILines } from '../../misc/lines/lines.type.ts';
+import { Lines } from '../../misc/lines/lines.ts';
 import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
 import { difference } from '../../open-scad/modeling/difference.ts';
 import { union } from '../../open-scad/modeling/union.ts';
 import { debug } from '../../open-scad/modifiers/modifier.ts';
-import { cone } from '../../open-scad/primitives/3d/cone.ts';
-import { cube } from '../../open-scad/primitives/3d/cube.ts';
-import { cylinder } from '../../open-scad/primitives/3d/cylinder.ts';
-import { mirror } from '../../open-scad/transformations/mirror.ts';
-import { rotate } from '../../open-scad/transformations/rotate.ts';
-import { translate } from '../../open-scad/transformations/translate.ts';
+import { cone } from '../../open-scad/build/primitives/3d/cone.ts';
+import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
+import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
+import { mirror } from '../../open-scad/build/transformations/mirror.ts';
+import { rotate } from '../../open-scad/build/transformations/rotate.ts';
+import { translate } from '../../open-scad/build/transformations/translate.ts';
 import { screwBody } from '../../parts/screw/body/screw-body.ts';
 import { screwHexNutSideInsert } from '../../parts/screw/nut/hex/screw-hex-nut-side-insert.ts';
 
@@ -28,7 +28,7 @@ export function spoolHolderRollerSegmentBaseBlock(
     rollerInnerRadius,
     rollerLength,
   }: ISpoolHolderRollerSegmentBaseBlockOptions,
-): ILines {
+): Lines {
   return cone({
     radiusBottom: rollerOuterRadius,
     radiusTop: rollerInnerRadius,
@@ -57,7 +57,7 @@ export function spoolHolderRollerSegmentScrewRemove(
     rollerScrewNutRadius,
     rollerScrewNutHeight,
   }: ISpoolHolderRollerSegmentScrewRemoveOptions,
-): ILines {
+): Lines {
   return union([
     screwBody({
       radius: rollerScrewRadius,
@@ -87,7 +87,7 @@ export function spoolHolderRollerSegment(
     rollerLength,
     ...options
   }: ISpoolHolderRollerOptions,
-): ILines {
+): Lines {
   return rotate([0, -90, 0], [
     translate([0, 0, -(rollerLength * 0.5)], [
       difference([
@@ -115,7 +115,7 @@ export function spoolHolderRoller(
   {
     ...options
   }: ISpoolHolderRollerOptions,
-): ILines {
+): Lines {
   return union([
     spoolHolderRollerSegment(options),
     rotate([0, 180, 0], [
@@ -142,7 +142,7 @@ export function spoolHolderRollerPositioned(
     rollerBaseBlockSpaceZ,
     ...options
   }: ISpoolHolderRollerPositionedOptions,
-): ILines {
+): Lines {
   const t_y: number = -(rollerDistanceY * 0.5);
   const t_z: number = (rollerOuterRadius + rollerBaseBlockSpaceZ);
 
@@ -167,7 +167,7 @@ export function spoolHolderBaseBlockBearingRemove(
     bearingRadius,
     bearingHeight,
   }: ISpoolHolderBaseBlockBearingRemove,
-): ILines {
+): Lines {
   return cylinder({
     radius: bearingRadius,
     height: (bearingHeight + MICRO_OFFSET),
@@ -191,7 +191,7 @@ export function spoolHolderBaseBlockBearingScrewRemove(
     bearingScrewHeadRadius,
     baseBlockExtraThicknessX,
   }: ISpoolHolderBaseBlockBearingScrewRemove,
-): ILines {
+): Lines {
   return union([
     translate([0, 0, -MICRO_OFFSET], [
       cylinder({
@@ -223,7 +223,7 @@ export function spoolHolderBaseBlockBearingAndScrewRemove(
     bearingHeight,
     ...options
   }: ISpoolHolderBaseBlockBearingAndScrewRemove,
-): ILines {
+): Lines {
   return translate([-bearingHeight, 0, 0], [
     rotate([0, 90, 0], [
       union([
@@ -257,7 +257,7 @@ export function spoolHolderBaseBlockXPart(
     rollerBaseBlockSpaceZ,
     baseBlockThicknessY,
   }: ISpoolHolderBaseBlockXPart,
-): ILines {
+): Lines {
   // const ratio_z: number = 0.6;
   // const offset_z: number = 3.4;
   const ratio_z: number = 0.75;
@@ -298,7 +298,7 @@ export function spoolHolderBaseBlockYPart(
     baseBlockExtraThicknessX,
     baseBlockThicknessY,
   }: ISpoolHolderBaseBlockYPart,
-): ILines {
+): Lines {
   const s_x: number = bearingHeight + baseBlockExtraThicknessX;
   const s_y: number = (rollerDistanceY * 0.5) + rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY + MICRO_OFFSET;
   const s_z: number = (rollerOuterRadius * 2) + (rollerBaseBlockSpaceZ * 2);
@@ -326,7 +326,7 @@ export function spoolHolderBaseBlock(
   {
     ...options
   }: ISpoolHolderBaseBlock,
-): ILines {
+): Lines {
 
   return difference([
     union([
@@ -361,7 +361,7 @@ export function spoolHolderHalf(
     rollerDistanceY,
     ...options
   }: ISpoolHolderHalfOptions,
-): ILines {
+): Lines {
   const t_x: number = rollerBaseBlockSpaceX + (rollerLength * 0.5)
   const t_y: number = (rollerDistanceY * 0.5);
   const t_z: number = rollerBaseBlockSpaceZ + rollerOuterRadius;
@@ -401,7 +401,7 @@ export function spoolHolder(
   {
     ...options
   }: ISpoolHolderOptions,
-): ILines {
+): Lines {
   return union([
     spoolHolderHalf(options),
     mirror([0, 1, 0], [
