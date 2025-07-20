@@ -1,7 +1,4 @@
 import { Lines } from '../../misc/lines/lines.ts';
-import { difference } from '../../open-scad/modeling/difference.ts';
-import { union } from '../../open-scad/modeling/union.ts';
-import { background, debug, none } from '../../open-scad/modifiers/modifier.ts';
 import { repeat } from '../../open-scad/build/others/repeat.ts';
 import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
 import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
@@ -11,13 +8,16 @@ import { linearExtrude } from '../../open-scad/build/transformations/linear-extr
 import { mirror } from '../../open-scad/build/transformations/mirror.ts';
 import { rotate } from '../../open-scad/build/transformations/rotate.ts';
 import { translate } from '../../open-scad/build/transformations/translate.ts';
+import { union } from '../../open-scad/build/modeling/union.ts';
+import { difference } from '../../open-scad/build/modeling/difference.ts';
+import { debug } from '../../open-scad/build/modifiers/debug.ts';
+import { none } from '../../open-scad/build/modifiers/none.ts';
 
 /*-------------NAMING-----------------*/
 
 // [X|Y|Z][p(ositive)|n(egative)|c(rossing)|v(oid)]
 
 /*-------------------------------------*/
-
 
 export interface IAluminiumExtrusionRightAngleFixingPlateOptions {
   extrusionSide: number;
@@ -40,21 +40,29 @@ export function aluminiumExtrusionRightAngleFixingPlate(
 
   return polygon({
     points: [
-      -a, -a,
-      b, -a,
-      b, a,
-      c, a,
+      -a,
+      -a,
+      b,
+      -a,
+      b,
+      a,
+      c,
+      a,
 
-      a, c,
-      a, b,
-      -a, b,
+      a,
+      c,
+      a,
+      b,
+      -a,
+      b,
     ],
   });
 }
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPlentyOptions extends IAluminiumExtrusionRightAngleFixingPlateOptions {
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPlentyOptions
+  extends IAluminiumExtrusionRightAngleFixingPlateOptions {
   extrusionCoverThickness: number;
   extrusionSide: number;
 }
@@ -94,8 +102,10 @@ export function aluminiumExtrusionRightAngleFixingBlockXpBlock(
     extrusionCoverThickness,
   }: IAluminiumExtrusionRightAngleFixingBlockXpBlockOptions,
 ): Lines {
-  const x: number = extrusionCoverThickness + extrusionSide + extrusionCoverThickness + extrusionCoverLength;
-  const y: number = extrusionCoverThickness + extrusionSide + extrusionCoverThickness;
+  const x: number = extrusionCoverThickness + extrusionSide +
+    extrusionCoverThickness + extrusionCoverLength;
+  const y: number = extrusionCoverThickness + extrusionSide +
+    extrusionCoverThickness;
   const z: number = y;
 
   const t: number = y * -0.5;
@@ -103,7 +113,7 @@ export function aluminiumExtrusionRightAngleFixingBlockXpBlock(
   return translate([t, t, t], [
     cube({
       size: [x, y, z],
-    })
+    }),
   ]);
 }
 
@@ -130,19 +140,24 @@ export function aluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemove(
 
   return polygon({
     points: [
-      b, a,
-      c, a,
+      b,
+      a,
+      c,
+      a,
 
-      a, c,
-      a, b,
+      a,
+      c,
+      a,
+      b,
     ],
   });
 }
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementRemoveOptions extends IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions {
-
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementRemoveOptions
+  extends
+    IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions {
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementRemove(
@@ -177,16 +192,24 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementA
     extraReinforcementLength,
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementAngleBlockOptions,
 ): Lines {
-  const c: number = (extrusionCoverThickness + (extrusionSide * 0.5));
+  const c: number = extrusionCoverThickness + (extrusionSide * 0.5);
   const a: number = c - 1;
   const b: number = c + extraReinforcementLength;
 
   return polyhedron({
     points: [
-      a, a, a,
-      b, a, a,
-      a, b, a,
-      a, a, b,
+      a,
+      a,
+      a,
+      b,
+      a,
+      a,
+      a,
+      b,
+      a,
+      a,
+      a,
+      b,
     ],
     faces: [
       [0, 1, 2], // xy plane
@@ -218,10 +241,18 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCorner(
 
   return polyhedron({
     points: [
-      a, a, a,
-      b, a, a,
-      a, b, a,
-      a, a, b,
+      a,
+      a,
+      a,
+      b,
+      a,
+      a,
+      a,
+      b,
+      a,
+      a,
+      a,
+      b,
     ],
     faces: [
       [0, 1, 2], // xy plane
@@ -234,7 +265,9 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCorner(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions extends IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions {
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions
+  extends
+    IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions {
   extraReinforcementAttachHoleOffset: number;
   extraReinforcementAttachHoleRadius: number;
 }
@@ -248,8 +281,10 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementW
     ...options
   }: IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions,
 ): Lines {
-  const extraReinforcementAttachHoleHeight: number = (extrusionCoverThickness * 2) + extrusionSide + 1;
-  const a: number = extrusionCoverThickness + (extrusionSide * 0.5) + extraReinforcementAttachHoleOffset;
+  const extraReinforcementAttachHoleHeight: number =
+    (extrusionCoverThickness * 2) + extrusionSide + 1;
+  const a: number = extrusionCoverThickness + (extrusionSide * 0.5) +
+    extraReinforcementAttachHoleOffset;
 
   return union([
     aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementRemove({
@@ -286,13 +321,14 @@ export function aluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove(
     extrusionAttachHoleOffset,
   }: IAluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove,
 ): Lines {
-  const a: number = (extrusionSide * 0.5);
+  const a: number = extrusionSide * 0.5;
   const b: number = extrusionCoverThickness + a;
   const c: number = b + extrusionAttachHoleOffset;
   const d: number = b + extrusionCoverLength - extrusionAttachHoleOffset;
 
   const screwHole = (): Lines => {
-    const offset: number = (extrusionCoverThickness * 0.5) + (extrusionSide * 0.5);
+    const offset: number = (extrusionCoverThickness * 0.5) +
+      (extrusionSide * 0.5);
     const screwHoleHeight: number = offset * 1.5;
     // const screwHoleHeight: number = ((extrusionCoverThickness * 2) + extrusionSide) * 2;
 
@@ -345,10 +381,12 @@ export function aluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove(
     extrusionAttachHoleRadius,
   }: IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove,
 ): Lines {
-  const extrusionHeight: number = ((extrusionCoverThickness * 2) + extrusionSide) * 4;
+  const extrusionHeight: number =
+    ((extrusionCoverThickness * 2) + extrusionSide) * 4;
 
   const screwHole = (): Lines => {
-    const offset: number = (extrusionCoverThickness * 0.5) + (extrusionSide * 0.5);
+    const offset: number = (extrusionCoverThickness * 0.5) +
+      (extrusionSide * 0.5);
     const screwHoleHeight: number = offset * 2;
 
     return translate([0, -offset, 0], [
@@ -384,15 +422,14 @@ export function aluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions extends //
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions extends
+  //
   IAluminiumExtrusionRightAngleFixingPlateOptions,
   IAluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove,
   IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions,
   IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions,
-  IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove
-//
+  IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZc(
@@ -415,7 +452,9 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZc(
           aluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove(options), // z
         ]),
         // extra reinforcement
-        aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(options),
+        aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(
+          options,
+        ),
       ]),
     ),
   ]);
@@ -438,14 +477,19 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemove(
 ): Lines {
   const extra: number = 1;
 
-  const l_x: number = extrusionCoverLength + (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
-  const t_x: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+  const l_x: number = extrusionCoverLength + (extrusionCoverThickness * 2) +
+    extrusionSide + (extra * 2);
+  const t_x: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
   const l_y: number = extrusionCoverThickness + extra;
-  const t_y: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+  const t_y: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
-  const l_z: number = (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
-  const t_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+  const l_z: number = (extrusionCoverThickness * 2) + extrusionSide +
+    (extra * 2);
+  const t_z: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
   return translate([t_x, t_y + 0.01, t_z], [
     cube({ size: [l_x, l_y, l_z], center: false }),
@@ -454,11 +498,11 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemove(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1RemoveOptions extends //
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemoveOptions
-//
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1RemoveOptions
+  extends
+    //
+    IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1PlateRemoveOptions//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Remove(
@@ -481,12 +525,12 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Remove(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Options extends //
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions,
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1RemoveOptions
-  //
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1Options
+  extends
+    //
+    IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions,
+    IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart1RemoveOptions//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1(
@@ -519,11 +563,14 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Remove(
 ): Lines {
   const extra: number = 1;
 
-  const l_x: number = extrusionCoverLength + extrusionCoverThickness + extrusionSide + extra;
+  const l_x: number = extrusionCoverLength + extrusionCoverThickness +
+    extrusionSide + extra;
   const t_x: number = -(extrusionSide * 0.5);
 
-  const l_z: number = (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
-  const t_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
+  const l_z: number = (extrusionCoverThickness * 2) + extrusionSide +
+    (extra * 2);
+  const t_z: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
   return translate([t_x, t_x, t_z], [
     cube({ size: [l_x, l_x, l_z], center: false }),
@@ -532,12 +579,12 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Remove(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Options extends //
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions,
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2RemoveOptions
-  //
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2Options
+  extends
+    //
+    IAluminiumExtrusionRightAngleFixingBlockXpYpZcOptions,
+    IAluminiumExtrusionRightAngleFixingBlockXpYpZcPart2RemoveOptions//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(
@@ -555,15 +602,14 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZpOptions extends //
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYpZpOptions extends
+  //
   IAluminiumExtrusionRightAngleFixingPlateOptions,
   IAluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove,
   IAluminiumExtrusionRightAngleFixingPlateExtraReinforcementRemoveOptions,
   IAluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemoveOptions,
-  IAluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCornerOptions
-//
+  IAluminiumExtrusionRightAngleFixingBlockXpYpZpRemoveCornerOptions//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYpZp(
@@ -582,7 +628,9 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZp(
       rotate([0, -90, 0], [ // yz plan
         aluminiumExtrusionRightAngleFixingBlockXpYpZcPlenty(options),
       ]),
-      aluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementAngleBlock(options),
+      aluminiumExtrusionRightAngleFixingBlockXpYpZpExtraReinforcementAngleBlock(
+        options,
+      ),
     ]),
     none(
       union([
@@ -601,13 +649,19 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZp(
         // extra reinforcement
         union([
           rotate([0, 0, 0], [ // xy plan
-            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(options),
+            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(
+              options,
+            ),
           ]),
           rotate([90, 0, 0], [ // xz plan
-            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(options),
+            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(
+              options,
+            ),
           ]),
           rotate([0, -90, 0], [ // yz plan
-            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(options),
+            aluminiumExtrusionRightAngleFixingBlockXpYpZcExtraReinforcementWithAttachHoleRemove(
+              options,
+            ),
           ]),
         ]),
         //corder
@@ -617,16 +671,14 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYpZp(
   ]);
 }
 
-
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions extends //
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions extends
+  //
   IAluminiumExtrusionRightAngleFixingBlockXpBlockOptions,
   IAluminiumExtrusionRightAngleFixingBlockXpExtrusionRemove,
-  IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove
-//
+  IAluminiumExtrusionRightAngleFixingBlockZcExtrusionRemove//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYvZc(
@@ -646,7 +698,6 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZc(
   ]);
 }
 
-
 /*---*/
 
 export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1RemoveOptions {
@@ -664,25 +715,28 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Remove(
 ): Lines {
   const extra: number = 1;
 
-  const l1_x: number = extra + extrusionCoverLength + extrusionCoverThickness + extrusionSide;
+  const l1_x: number = extra + extrusionCoverLength + extrusionCoverThickness +
+    extrusionSide;
   const t1_x: number = -(extrusionSide * 0.5);
 
   const l1_y: number = extrusionCoverThickness + extrusionSide + extra;
-  const t1_y: number = -(extrusionCoverThickness * 0.5) - (extrusionSide * 0.5) - extra + extrusionCoverThickness;
+  const t1_y: number = -(extrusionCoverThickness * 0.5) -
+    (extrusionSide * 0.5) - extra + extrusionCoverThickness;
 
   const l1_z: number = extrusionCoverThickness + extrusionSide + extra;
-  const t1_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
-
+  const t1_z: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
   const l2_x: number = l1_x;
   const t2_x: number = t1_x;
 
   const l2_y: number = extrusionCoverThickness + extra;
-  const t2_y: number = (extrusionSide * 0.5);
+  const t2_y: number = extrusionSide * 0.5;
 
-  const l2_z: number = (extrusionCoverThickness * 2) + extrusionSide + (extra * 2);
-  const t2_z: number = -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
-
+  const l2_z: number = (extrusionCoverThickness * 2) + extrusionSide +
+    (extra * 2);
+  const t2_z: number =
+    -(extrusionCoverThickness + (extrusionSide * 0.5) + extra);
 
   return union([
     translate([t1_x, t1_y, t1_z], [
@@ -690,18 +744,18 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Remove(
     ]),
     translate([t2_x, t2_y, t2_z], [
       cube({ size: [l2_x, l2_y, l2_z], center: false }),
-    ])
+    ]),
   ]);
 }
 
 /*---*/
 
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Options extends //
-  IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions,
-  IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1RemoveOptions
-//
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Options
+  extends
+    //
+    IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions,
+    IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1RemoveOptions//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1(
@@ -717,16 +771,14 @@ export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1(
   ]);
 }
 
-
 /*---*/
 
-
-export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart2Options extends //
-  IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions,
-  IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Options
-//
+export interface IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart2Options
+  extends
+    //
+    IAluminiumExtrusionRightAngleFixingBlockXpYvZcOptions,
+    IAluminiumExtrusionRightAngleFixingBlockXpYvZcPart1Options//
 {
-
 }
 
 export function aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2(

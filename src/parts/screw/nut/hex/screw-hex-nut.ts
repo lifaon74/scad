@@ -1,9 +1,9 @@
-import { cos } from '../../../../open-scad/math/cos.ts';
 import { Lines } from '../../../../misc/lines/lines.ts';
-import { difference } from '../../../../open-scad/modeling/difference.ts';
 import { cylinder, CylinderOptions } from '../../../../open-scad/build/primitives/3d/cylinder.ts';
 import { screwBody } from '../../body/screw-body.ts';
-import { IScrewWasherExternalOptions } from '../../washer/screw-washer.ts';
+import { ScrewWasherExternalOptions } from '../../washer/screw-washer.ts';
+import { cos } from '../../../../open-scad/build/math/cos.ts';
+import { difference } from '../../../../open-scad/build/modeling/difference.ts';
 
 export function getRealScrewHexNutRadius(
   radius: number,
@@ -11,7 +11,7 @@ export function getRealScrewHexNutRadius(
   return radius / cos(30);
 }
 
-export interface IScrewNutExternalOptions extends Pick<CylinderOptions, 'height' | 'radius'> {
+export interface ScrewNutExternalOptions extends Pick<CylinderOptions, 'height' | 'radius'> {
 
 }
 
@@ -19,7 +19,7 @@ export function screwHexNutExternal(
   {
     radius,
     ...options
-  }: IScrewWasherExternalOptions,
+  }: ScrewWasherExternalOptions,
 ): Lines {
   return cylinder({
     ...options,
@@ -29,9 +29,9 @@ export function screwHexNutExternal(
   });
 }
 
-export interface IScrewHeyNutOptions extends Pick<IScrewNutExternalOptions, 'height'> {
-  externalRadius: number;
-  internalRadius: number;
+export interface ScrewHeyNutOptions extends Pick<ScrewNutExternalOptions, 'height'> {
+  readonly externalRadius: number;
+  readonly internalRadius: number;
 }
 
 export function screwHexNut(
@@ -39,7 +39,7 @@ export function screwHexNut(
     externalRadius,
     internalRadius,
     ...options
-  }: IScrewHeyNutOptions,
+  }: ScrewHeyNutOptions,
 ): Lines {
   return difference([
     screwHexNutExternal({

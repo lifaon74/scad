@@ -1,49 +1,48 @@
-import { Lines } from '../misc/lines/lines.ts';
-import { ALUMINIUM } from '../open-scad/color/colors.constants.ts';
-import { exportToScad } from '../open-scad/export/export-to-scad.ts';
-import { deg } from '../open-scad/math/units/angle/deg-to-rad.ts';
-import { diameter } from '../open-scad/math/units/diameter-to-radius.ts';
-import { difference } from '../open-scad/modeling/difference.ts';
-import { union } from '../open-scad/modeling/union.ts';
-import { background, debug, modifier, none } from '../open-scad/modifiers/modifier.ts';
-import { bom } from '../open-scad/build/others/bom.ts';
-import { $fn } from '../open-scad/build/others/fn.ts';
-import { group } from '../open-scad/build/others/group.ts';
-import { circle } from '../open-scad/build/primitives/2d/circle.ts';
-import { cube } from '../open-scad/build/primitives/3d/cube.ts';
-import { cylinder } from '../open-scad/build/primitives/3d/cylinder.ts';
-import { sphere } from '../open-scad/build/primitives/3d/sphere.ts';
-import { color } from '../open-scad/build/transformations/color.ts';
-import { linearExtrude } from '../open-scad/build/transformations/linear-extrude.ts';
-import { minkowski } from '../open-scad/build/transformations/minkowski.ts';
-import { mirror } from '../open-scad/build/transformations/mirror.ts';
-import { offset2d } from '../open-scad/build/transformations/offset-2d.ts';
-import { offset3d } from '../open-scad/build/transformations/offset-3d.ts';
-import { rotate } from '../open-scad/build/transformations/rotate.ts';
-import { round3d } from '../open-scad/build/transformations/round-3d.ts';
-import { translate } from '../open-scad/build/transformations/translate.ts';
-import { Vector3d } from '../open-scad/types/vector-3d.ts';
-import { SCREW_M3 } from '../parts/screw/body/screw-body.constants.ts';
-import { PHILLIPS_PAN_M3, screwPhillipsPanAuto } from '../parts/screw/built-in/phillips-pan/screw-pillips-pan.constants.ts';
-import { HEX_NUT_M3, HEX_NUT_M3_SELF_LOCK } from '../parts/screw/nut/hex/screw-hex-nut.constants.ts';
+import { Lines } from "../misc/lines/lines.ts";
+import { exportToScad } from "../open-scad/export/export-to-scad.ts";
+import { $fn } from "../open-scad/build/others/fn.ts";
+import { group } from "../open-scad/build/others/group.ts";
+import { cylinder } from "../open-scad/build/primitives/3d/cylinder.ts";
+import { rotate } from "../open-scad/build/transformations/rotate.ts";
+import { translate } from "../open-scad/build/transformations/translate.ts";
+import { SCREW_M3 } from "../parts/screw/body/screw-body.constants.ts";
+import { HEX_NUT_M3_SELF_LOCK } from "../parts/screw/nut/hex/screw-hex-nut.constants.ts";
 import {
   aluminiumExtrusionRightAngleFixingPlate,
   IAluminiumExtrusionRightAngleFixingPlateOptions,
-} from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing-plate.ts';
-import { rollingShutterHandle } from './rolling-shutter-handle/rolling-shutter-handle.ts';
-import { sofaTableFoot } from './sofa-table/sofa-table.ts';
-import { spoolHolder, spoolHolderRoller, spoolHolderRollerPositioned } from './spool-holder/spool-holder.ts';
-import { genericHandle, IGenericHandleOptions } from './generic-handle/generic-handle.ts';
-import { placedBorderRadius3d } from '../open-scad/build/primitives/3d/placed-border-radius-3d.ts';
-import { ISimpleLockFixBlockOptions, simpleLockFixBlock, simpleLockLock, ISimpleLockLockOptions } from './simple-lock/simple-lock.ts';
+} from "./aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing-plate.ts";
+import { rollingShutterHandle } from "./rolling-shutter-handle/rolling-shutter-handle.ts";
+import {
+  ISimpleLockFixBlockOptions,
+  ISimpleLockLockOptions,
+  simpleLockLock,
+} from "./simple-lock/simple-lock.ts";
 import {
   aluminiumExtrusionRightAngleFixing,
-  aluminiumExtrusionRightAngleFixingInitialBlock, IAluminiumExtrusionRightAngleFixingOptions,
-} from './aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing.ts';
-import { aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2 } from './aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts';
-import { aluminiumExtrusionGridAttach } from './aluminium-extrusion-grid-attach/aluminium-extrusion-grid-attach.ts';
+  IAluminiumExtrusionRightAngleFixingOptions,
+} from "./aluminium-extrusion-fixing/aluminium-extrusion-right-angle-fixing.ts";
+import {
+  aluminiumExtrusionRightAngleFixingBlockXpYpZc,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2,
+  aluminiumExtrusionRightAngleFixingBlockXpYpZp,
+  aluminiumExtrusionRightAngleFixingBlockXpYvZc,
+} from "./aluminium-extrusion-fixing/aluminium-extrusion-fixing.ts";
+import {
+  aluminiumExtrusionGridAttach,
+  IAluminiumExtrusionGridAttachOptions,
+} from "./aluminium-extrusion-grid-attach/aluminium-extrusion-grid-attach.ts";
+import { diameter } from "../open-scad/build/math/units/length/circle/diameter.ts";
+import { background } from "../open-scad/build/modifiers/background.ts";
+import { sofaTableFoot } from "./sofa-table/sofa-table.ts";
+import { placedBorderRadius3d } from "../open-scad/build/primitives/3d/placed-border-radius-3d.ts";
+import {
+  genericHandle,
+  IGenericHandleOptions,
+} from "./generic-handle/generic-handle.ts";
+import { spoolHolder } from "./spool-holder/spool-holder.ts";
 
-const OUT_PATH = './dist/debug.scad';
+const OUT_PATH = "./dist/debug.scad";
 
 /*--------------*/
 
@@ -65,11 +64,11 @@ function project01(): Lines {
     $fn(30),
     // aluminiumExtrusionRightAngleFixingBlockXpYpZc(config),
     // aluminiumExtrusionRightAngleFixingBlockXpYpZcPart1(config),
-    // aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(config),
+    aluminiumExtrusionRightAngleFixingBlockXpYpZcPart2(config),
     // aluminiumExtrusionRightAngleFixingBlockXpYpZp(config),
     // aluminiumExtrusionRightAngleFixingBlockXpYvZc(config),
     // aluminiumExtrusionRightAngleFixingBlockXpYvZcPart1(config),
-    aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2(config),
+    // aluminiumExtrusionRightAngleFixingBlockXpYvZcPart2(config),
   ]);
 }
 
@@ -149,16 +148,16 @@ function project03(): Lines {
       rollerBaseBlockSpaceZ,
     }: any,
   ): number => {
-    const x: number = (rollerDistanceY * 0.5);
-    const y: number = (rollerBaseBlockSpaceZ + (rollerInnerRadius * 2));
+    const x: number = rollerDistanceY * 0.5;
+    const y: number = rollerBaseBlockSpaceZ + (rollerInnerRadius * 2);
     return (x ** 2 + y ** 2) / (2 * y);
   };
 
   const minSpoolRadius: number = computeMinSpoolRadius(config);
-  console.log('minSpoolDiameter', minSpoolRadius * 2);
+  console.log("minSpoolDiameter", minSpoolRadius * 2);
 
   interface ISpool {
-    diameter: number,
+    diameter: number;
     width: number;
   }
 
@@ -210,50 +209,10 @@ function project03(): Lines {
   ]);
 }
 
-function project04(): Lines {
-  const config = {
-    pipeInnerRadius: diameter(140),
-    pipeOuterRadius: diameter(141),
-    pipeInnerInsertHeight: 34,
-    pipeInnerInsertThickness: 2,
-    horizontalFixThickness: 2,
-    horizontalFixWidth: 14,
-    horizontalFixScrewRadius: SCREW_M3.radius,
-    horizontalFixScrewOffset: 7,
-    horizontalFixSpacing: 0.5,
-    pipeFixPartThickness: 3,
-    pipeFixPartHeight: 20,
-    pipeFixPartAttachWidth: 11,
-    pipeFixPartAttachThickness: 5,
-    pipeFixPartAttachScrewRadius: SCREW_M3.radius,
-  };
-
-  const doorFixConfig: IAirVentDoorFixOptions = {
-    length: 15,
-    minY: 3,
-    maxY: 5,
-    radius: diameter(10),
-    height: 8 + 5,
-    holeRadius: diameter(3),
-  };
-
-  return group([
-    $fn(30),
-    // airVentPipeFixPart1(config),
-    // translate([0, 0, 12], [
-    //   airVentPipeFixPart2(config),
-    // ]),
-    // translate([0, 0, 14.5], [
-    //   airVentPipeFixPart3(config),
-    // ]),
-    airVentDoorFix(doorFixConfig),
-  ]);
-}
-
 function project05(): Lines {
   const config = {
     bottomWheelRadius: diameter(17),
-    bottomWheelHeight: 3
+    bottomWheelHeight: 3,
   };
 
   return group([
@@ -288,7 +247,6 @@ function project06(): Lines {
   ]);
 }
 
-
 function debugBorderRadius3d(): Lines {
   return group([
     $fn(30),
@@ -296,14 +254,21 @@ function debugBorderRadius3d(): Lines {
       radius: 1,
 
       points: [
-        0, 0, 0,
-        10, 0, 10,
-        10, 0, 0,
-        10, 10, 0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        10,
+        10,
+        0,
+        0,
+        10,
+        10,
+        0,
       ],
       face1: [0, 1, 2],
       face2: [2, 1, 3],
-
       // points: [
       //   0, 0, 0,
       //   10, 0, 0,
@@ -350,7 +315,7 @@ function project08(): Lines {
   const config: IAluminiumExtrusionGridAttachOptions = {
     holesSpacing: 19,
     holesRadius: diameter(3),
-    xLength:  19 * 2 - 1,
+    xLength: 19 * 2 - 1,
     yLength: 18,
     zLength: 4,
   };
@@ -361,11 +326,13 @@ function project08(): Lines {
   ]);
 }
 
-
 /*--------------*/
 
 export async function debugFunctionBased() {
-  // const lines = project01();
+  const lines = project01();
+  // const lines = project011();
+  // const lines = project012();
+
   // const lines = project02();
   // const lines = project03();
   // const lines = project04();
@@ -373,10 +340,8 @@ export async function debugFunctionBased() {
   // const lines = project06();
   // const lines = debugBorderRadius3d();
   // const lines = project07();
-  // const lines = project011();
-  // const lines = project012();
-  // const lines = project012();
-  const lines = project08();
+
+  // const lines = project08();
 
   await exportToScad(OUT_PATH, lines);
 }

@@ -1,7 +1,7 @@
-import { diameter } from '../../../open-scad/math/units/diameter-to-radius.ts';
-import { IScrewWasherExternalOptions } from './screw-washer.ts';
+import { ScrewWasherExternalOptions } from './screw-washer.ts';
+import { diameter } from '../../../open-scad/build/math/units/length/circle/diameter.ts';
 
-export const WASHER_M3: IScrewWasherExternalOptions = {
+export const WASHER_M3: ScrewWasherExternalOptions = {
   radius: diameter(7.0),
   height: 0.5,
 };

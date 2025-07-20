@@ -1,21 +1,20 @@
 import { Lines } from '../../../../misc/lines/lines.ts';
-import { MICRO_OFFSET } from '../../../../open-scad/math/micro-offset.ts';
-import { union } from '../../../../open-scad/modeling/union.ts';
 import { translate } from '../../../../open-scad/build/transformations/translate.ts';
-import { IScrewBodyOptions, screwBody } from '../../body/screw-body.ts';
-import { IScrewPhillipsPanHeadOptions, screwPhillipsPanHead } from '../../head/phillips-pan/screw-phillips-pan-head.ts';
+import { ScrewBodyOptions, screwBody } from '../../body/screw-body.ts';
+import { ScrewPhillipsPanHeadOptions, screwPhillipsPanHead } from '../../head/phillips-pan/screw-phillips-pan-head.ts';
+import { union } from '../../../../open-scad/build/modeling/union.ts';
+import { MICRO_OFFSET } from '../../../../open-scad/build/math/micro-offset.ts';
 
-export interface IScrewPhillipsPanOptions {
-  head: IScrewPhillipsPanHeadOptions;
-  body: IScrewBodyOptions;
+export interface ScrewPhillipsPanOptions {
+  readonly head: ScrewPhillipsPanHeadOptions;
+  readonly body: ScrewBodyOptions;
 }
-
 
 export function screwPhillipsPan(
   {
     head,
     body,
-  }: IScrewPhillipsPanOptions,
+  }: ScrewPhillipsPanOptions,
 ): Lines {
   return union([
     translate([0, 0, (head.height * 0.5) - MICRO_OFFSET], [

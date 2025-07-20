@@ -1,17 +1,17 @@
 import { Lines } from '../../misc/lines/lines.ts';
-import { union } from '../../open-scad/modeling/union.ts';
 import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
 import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
 import { rotate } from '../../open-scad/build/transformations/rotate.ts';
 import { translate } from '../../open-scad/build/transformations/translate.ts';
 import { minkowski } from '../../open-scad/build/transformations/minkowski.ts';
-import { difference } from '../../open-scad/modeling/difference.ts';
 import { linearExtrude } from '../../open-scad/build/transformations/linear-extrude.ts';
 import { polygon } from '../../open-scad/build/primitives/2d/polygon.ts';
-import { debug } from '../../open-scad/modifiers/modifier.ts';
-import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
 import { mirror } from '../../open-scad/build/transformations/mirror.ts';
 import { sphere } from '../../open-scad/build/primitives/3d/sphere.ts';
+import { union } from '../../open-scad/build/modeling/union.ts';
+import { difference } from '../../open-scad/build/modeling/difference.ts';
+import { debug } from '../../open-scad/build/modifiers/debug.ts';
+import { MICRO_OFFSET } from '../../open-scad/build/math/micro-offset.ts';
 
 /*---*/
 
@@ -31,10 +31,18 @@ export function genericHandleHandleBlock(
   }: IGenericHandleHandleBlockOptions,
 ): Lines {
   return union([
-    translate([handleX * -0.5, handleY * -0.5 + handleBorderRadius, -handleZ + handleBorderRadius], [
+    translate([
+      handleX * -0.5,
+      handleY * -0.5 + handleBorderRadius,
+      -handleZ + handleBorderRadius,
+    ], [
       minkowski([
         cube({
-          size: [handleX - 10, handleY - (handleBorderRadius * 2), handleZ - (handleBorderRadius * 2)],
+          size: [
+            handleX - 10,
+            handleY - (handleBorderRadius * 2),
+            handleZ - (handleBorderRadius * 2),
+          ],
         }),
         rotate([0, 90, 0], [
           cylinder({
@@ -64,7 +72,6 @@ export function genericHandleFixMainBlock(
     handleFixBorderRadius,
   }: IGenericHandleFixMainBlockOptions,
 ): Lines {
-
   // debug(
   //   placedBorderRadius3d({
   //     radius: 1,
@@ -93,19 +100,25 @@ export function genericHandleFixMainBlock(
   //   }),
   // ),
 
-
   return rotate([90, 0, 0], [
     difference([
-      translate([handleFixBorderRadius, 0, handleFixY * -0.5 + handleFixBorderRadius], [
+      translate([
+        handleFixBorderRadius,
+        0,
+        handleFixY * -0.5 + handleFixBorderRadius,
+      ], [
         minkowski([
           linearExtrude({
             height: handleFixY - (handleFixBorderRadius * 2),
           }, [
             polygon({
               points: [
-                0, 0,
-                handleFixX - (handleFixBorderRadius * 2), 0,
-                0, handleFixZ - handleFixBorderRadius,
+                0,
+                0,
+                handleFixX - (handleFixBorderRadius * 2),
+                0,
+                0,
+                handleFixZ - handleFixBorderRadius,
               ],
             }),
           ]),
@@ -118,9 +131,13 @@ export function genericHandleFixMainBlock(
       ]),
       translate([0, -handleFixBorderRadius * 2, -handleFixY], [
         cube({
-          size: [handleFixX + handleFixBorderRadius, handleFixBorderRadius * 2, handleFixY * 2],
+          size: [
+            handleFixX + handleFixBorderRadius,
+            handleFixBorderRadius * 2,
+            handleFixY * 2,
+          ],
         }),
-      ])
+      ]),
     ]),
   ]);
   // return rotate([90, 0, 0], [
@@ -185,10 +202,10 @@ export function genericHandleFixBlockScrewRemove(
 
 /*---*/
 
-export interface IGenericHandleFixBlockOptions extends //
+export interface IGenericHandleFixBlockOptions extends
+  //
   IGenericHandleFixMainBlockOptions,
-  IGenericHandleFixBlockScrewRemoveOptions
-//
+  IGenericHandleFixBlockScrewRemoveOptions//
 {
 }
 
@@ -203,10 +220,10 @@ export function genericHandleFixBlock(
 
 /*---*/
 
-export interface IGenericHandleOptions extends //
+export interface IGenericHandleOptions extends
+  //
   IGenericHandleHandleBlockOptions,
-  IGenericHandleFixBlockOptions
-//
+  IGenericHandleFixBlockOptions//
 {
   handleX: number;
   handleFixZ: number;

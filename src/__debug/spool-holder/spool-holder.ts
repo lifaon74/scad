@@ -1,8 +1,4 @@
 import { Lines } from '../../misc/lines/lines.ts';
-import { MICRO_OFFSET } from '../../open-scad/math/micro-offset.ts';
-import { difference } from '../../open-scad/modeling/difference.ts';
-import { union } from '../../open-scad/modeling/union.ts';
-import { debug } from '../../open-scad/modifiers/modifier.ts';
 import { cone } from '../../open-scad/build/primitives/3d/cone.ts';
 import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
 import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
@@ -11,6 +7,10 @@ import { rotate } from '../../open-scad/build/transformations/rotate.ts';
 import { translate } from '../../open-scad/build/transformations/translate.ts';
 import { screwBody } from '../../parts/screw/body/screw-body.ts';
 import { screwHexNutSideInsert } from '../../parts/screw/nut/hex/screw-hex-nut-side-insert.ts';
+import { union } from '../../open-scad/build/modeling/union.ts';
+import { difference } from '../../open-scad/build/modeling/difference.ts';
+import { debug } from '../../open-scad/build/modifiers/debug.ts';
+import { MICRO_OFFSET } from '../../open-scad/build/math/micro-offset.ts';
 
 /*---*/
 
@@ -75,10 +75,10 @@ export function spoolHolderRollerSegmentScrewRemove(
 
 /*---*/
 
-export interface ISpoolHolderRollerSegmentOptions extends //
-  ISpoolHolderRollerSegmentBaseBlockOptions,
-  ISpoolHolderRollerSegmentScrewRemoveOptions
+export interface ISpoolHolderRollerSegmentOptions extends
   //
+  ISpoolHolderRollerSegmentBaseBlockOptions,
+  ISpoolHolderRollerSegmentScrewRemoveOptions//
 {
 }
 
@@ -105,9 +105,9 @@ export function spoolHolderRollerSegment(
 
 /*---*/
 
-export interface ISpoolHolderRollerOptions extends //
-  ISpoolHolderRollerSegmentOptions
+export interface ISpoolHolderRollerOptions extends
   //
+  ISpoolHolderRollerSegmentOptions//
 {
 }
 
@@ -126,9 +126,9 @@ export function spoolHolderRoller(
 
 /*---*/
 
-export interface ISpoolHolderRollerPositionedOptions extends //
-  ISpoolHolderRollerSegmentOptions
+export interface ISpoolHolderRollerPositionedOptions extends
   //
+  ISpoolHolderRollerSegmentOptions//
 {
   rollerDistanceY: number;
   rollerOuterRadius: number;
@@ -144,18 +144,17 @@ export function spoolHolderRollerPositioned(
   }: ISpoolHolderRollerPositionedOptions,
 ): Lines {
   const t_y: number = -(rollerDistanceY * 0.5);
-  const t_z: number = (rollerOuterRadius + rollerBaseBlockSpaceZ);
+  const t_z: number = rollerOuterRadius + rollerBaseBlockSpaceZ;
 
   return translate([0, t_y, t_z], [
     spoolHolderRoller({
       ...options,
       rollerOuterRadius,
     }),
-  ])
+  ]);
 }
 
 /** HOLDER **/
-
 
 export interface ISpoolHolderBaseBlockBearingRemove {
   bearingRadius: number;
@@ -210,10 +209,10 @@ export function spoolHolderBaseBlockBearingScrewRemove(
 
 /*---*/
 
-export interface ISpoolHolderBaseBlockBearingAndScrewRemove extends //
+export interface ISpoolHolderBaseBlockBearingAndScrewRemove extends
+  //
   ISpoolHolderBaseBlockBearingRemove,
-  ISpoolHolderBaseBlockBearingScrewRemove
-//
+  ISpoolHolderBaseBlockBearingScrewRemove//
 {
   bearingHeight: number;
 }
@@ -263,12 +262,15 @@ export function spoolHolderBaseBlockXPart(
   const ratio_z: number = 0.75;
   const offset_z: number = 0;
 
-  const s_x: number = rollerBaseBlockSpaceX + (rollerLength * 0.5) + MICRO_OFFSET;
+  const s_x: number = rollerBaseBlockSpaceX + (rollerLength * 0.5) +
+    MICRO_OFFSET;
   const s_y: number = baseBlockThicknessY;
-  const s_z: number = ((rollerOuterRadius * 2) + (rollerBaseBlockSpaceZ * 2)) * ratio_z;
+  const s_z: number = ((rollerOuterRadius * 2) + (rollerBaseBlockSpaceZ * 2)) *
+    ratio_z;
 
   const t_x: number = 0;
-  const t_y: number = -(rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY);
+  const t_y: number =
+    -(rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY);
   const t_z: number = -(rollerOuterRadius + rollerBaseBlockSpaceZ) + offset_z;
 
   return translate([t_x, t_y, t_z], [
@@ -300,11 +302,13 @@ export function spoolHolderBaseBlockYPart(
   }: ISpoolHolderBaseBlockYPart,
 ): Lines {
   const s_x: number = bearingHeight + baseBlockExtraThicknessX;
-  const s_y: number = (rollerDistanceY * 0.5) + rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY + MICRO_OFFSET;
+  const s_y: number = (rollerDistanceY * 0.5) + rollerOuterRadius +
+    rollerBaseBlockSpaceY + baseBlockThicknessY + MICRO_OFFSET;
   const s_z: number = (rollerOuterRadius * 2) + (rollerBaseBlockSpaceZ * 2);
 
   const t_x: number = -s_x;
-  const t_y: number = -(rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY);
+  const t_y: number =
+    -(rollerOuterRadius + rollerBaseBlockSpaceY + baseBlockThicknessY);
   const t_z: number = -(rollerOuterRadius + rollerBaseBlockSpaceZ);
 
   return translate([t_x, t_y, t_z], [
@@ -314,11 +318,11 @@ export function spoolHolderBaseBlockYPart(
 
 /*---*/
 
-export interface ISpoolHolderBaseBlock extends //
+export interface ISpoolHolderBaseBlock extends
+  //
   ISpoolHolderBaseBlockBearingAndScrewRemove,
   ISpoolHolderBaseBlockXPart,
-  ISpoolHolderBaseBlockYPart
-//
+  ISpoolHolderBaseBlockYPart//
 {
 }
 
@@ -327,7 +331,6 @@ export function spoolHolderBaseBlock(
     ...options
   }: ISpoolHolderBaseBlock,
 ): Lines {
-
   return difference([
     union([
       spoolHolderBaseBlockXPart(options),
@@ -341,9 +344,9 @@ export function spoolHolderBaseBlock(
 
 /*---*/
 
-export interface ISpoolHolderHalfOptions extends //
-  ISpoolHolderBaseBlock
-//
+export interface ISpoolHolderHalfOptions extends
+  //
+  ISpoolHolderBaseBlock//
 {
   rollerLength: number;
   rollerBaseBlockSpaceX: number;
@@ -362,8 +365,8 @@ export function spoolHolderHalf(
     ...options
   }: ISpoolHolderHalfOptions,
 ): Lines {
-  const t_x: number = rollerBaseBlockSpaceX + (rollerLength * 0.5)
-  const t_y: number = (rollerDistanceY * 0.5);
+  const t_x: number = rollerBaseBlockSpaceX + (rollerLength * 0.5);
+  const t_y: number = rollerDistanceY * 0.5;
   const t_z: number = rollerBaseBlockSpaceZ + rollerOuterRadius;
 
   const generateBaseBlock = () => {
@@ -375,10 +378,9 @@ export function spoolHolderHalf(
         rollerBaseBlockSpaceZ,
         rollerOuterRadius,
         rollerDistanceY,
-      })
-    ])
-  }
-
+      }),
+    ]);
+  };
 
   return union([
     generateBaseBlock(),
@@ -390,11 +392,10 @@ export function spoolHolderHalf(
 
 /*---*/
 
-export interface ISpoolHolderOptions extends //
-  ISpoolHolderHalfOptions
-//
+export interface ISpoolHolderOptions extends
+  //
+  ISpoolHolderHalfOptions//
 {
-
 }
 
 export function spoolHolder(

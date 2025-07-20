@@ -1,19 +1,19 @@
 import { Lines } from '../../../../misc/lines/lines.ts';
-import { MICRO_OFFSET } from '../../../../open-scad/math/micro-offset.ts';
-import { difference } from '../../../../open-scad/modeling/difference.ts';
-import { modifier } from '../../../../open-scad/modifiers/modifier.ts';
 import { polygon } from '../../../../open-scad/build/primitives/2d/polygon.ts';
 import { cylinder, CylinderOptions } from '../../../../open-scad/build/primitives/3d/cylinder.ts';
 import { linearExtrude } from '../../../../open-scad/build/transformations/linear-extrude.ts';
 import { rotate } from '../../../../open-scad/build/transformations/rotate.ts';
 import { translate } from '../../../../open-scad/build/transformations/translate.ts';
+import { difference } from '../../../../open-scad/build/modeling/difference.ts';
+import { modifier } from '../../../../open-scad/build/modifiers/modifier.ts';
+import { MICRO_OFFSET } from '../../../../open-scad/build/math/micro-offset.ts';
 
-export interface IScrewPhillipsPanHeadOptions extends Pick<CylinderOptions, 'height' | 'radius'> {
+export interface ScrewPhillipsPanHeadOptions extends Pick<CylinderOptions, 'height' | 'radius'> {
 
 }
 
 export function screwPhillipsPanHead(
-  options: IScrewPhillipsPanHeadOptions,
+  options: ScrewPhillipsPanHeadOptions,
 ): Lines {
   const x: number = options.radius * 0.7;
   const y: number = options.radius * 0.2;

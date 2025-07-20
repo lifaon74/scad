@@ -1,7 +1,4 @@
 import { Lines } from '../../misc/lines/lines.ts';
-import { diameter } from '../../open-scad/math/units/diameter-to-radius.ts';
-import { difference } from '../../open-scad/modeling/difference.ts';
-import { union } from '../../open-scad/modeling/union.ts';
 import { $fn } from '../../open-scad/build/others/fn.ts';
 import { cube } from '../../open-scad/build/primitives/3d/cube.ts';
 import { cylinder } from '../../open-scad/build/primitives/3d/cylinder.ts';
@@ -9,6 +6,9 @@ import { rotate } from '../../open-scad/build/transformations/rotate.ts';
 import { round3d } from '../../open-scad/build/transformations/round-3d.ts';
 import { translate } from '../../open-scad/build/transformations/translate.ts';
 import { Vector3d } from '../../open-scad/types/vector-3d.ts';
+import { diameter } from '../../open-scad/build/math/units/length/circle/diameter.ts';
+import { difference } from '../../open-scad/build/modeling/difference.ts';
+import { union } from '../../open-scad/build/modeling/union.ts';
 
 export interface ISofaTableFootOptions {
   footSize: Vector3d;

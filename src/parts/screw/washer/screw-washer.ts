@@ -1,14 +1,14 @@
 import { Lines } from '../../../misc/lines/lines.ts';
-import { difference } from '../../../open-scad/modeling/difference.ts';
 import { cylinder, CylinderOptions } from '../../../open-scad/build/primitives/3d/cylinder.ts';
 import { screwBody } from '../body/screw-body.ts';
+import { difference } from '../../../open-scad/build/modeling/difference.ts';
 
-export interface IScrewWasherExternalOptions extends Pick<CylinderOptions, 'height' | 'radius'>{
+export interface ScrewWasherExternalOptions extends Pick<CylinderOptions, 'height' | 'radius'>{
 
 }
 
 export function screwWasherExternal(
-  options: IScrewWasherExternalOptions,
+  options: ScrewWasherExternalOptions,
 ): Lines {
   return cylinder({
     ...options,
@@ -17,9 +17,9 @@ export function screwWasherExternal(
 }
 
 
-export interface IScrewWasherOptions extends Pick<IScrewWasherExternalOptions, 'height'>{
-  externalRadius: number;
-  internalRadius: number;
+export interface ScrewWasherOptions extends Pick<ScrewWasherExternalOptions, 'height'>{
+  readonly externalRadius: number;
+  readonly internalRadius: number;
 }
 
 export function screwWasher(
@@ -27,7 +27,7 @@ export function screwWasher(
     externalRadius,
     internalRadius,
     ...options
-  }: IScrewWasherOptions,
+  }: ScrewWasherOptions,
 ): Lines {
   return difference([
     screwWasherExternal({

@@ -1,13 +1,13 @@
-import { diameter } from '../../../open-scad/math/units/diameter-to-radius.ts';
-import { IScrewBodyOptions } from './screw-body.ts';
+import { ScrewBodyOptions } from './screw-body.ts';
+import { diameter } from '../../../open-scad/build/math/units/length/circle/diameter.ts';
 
-export type IPartialScrewBodyOptions = Pick<IScrewBodyOptions, 'radius'>;
+export type PartialScrewBodyOptions = Pick<ScrewBodyOptions, 'radius'>;
 
-export const SCREW_M3: IPartialScrewBodyOptions = {
+export const SCREW_M3: PartialScrewBodyOptions = {
   radius: diameter(3),
 };
 
-export const SCREW_M4: IPartialScrewBodyOptions = {
+export const SCREW_M4: PartialScrewBodyOptions = {
   radius: diameter(4),
 };
 
